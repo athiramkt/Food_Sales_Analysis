@@ -343,9 +343,8 @@ labs(title ="Sales by Product",
        caption = "Sample sales data downloaded for test purposes",
        x="Product",
        y="Total Sales")
+       knitr::include_graphics("Images/Sales_by_product.png")
 ```
-![Descriptive Alt Text](Sales_by_product.png)
-
 The chart provides a clear representation of total sales for each product, allowing for an in-depth analysis of sales performance. Below are key takeaways from the data:
 
 1. **Top-Performing Products**
