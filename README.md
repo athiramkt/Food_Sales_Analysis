@@ -29,6 +29,7 @@ Key business questions to guide the analysis:
 This phase focuses on setting up the environment and exploring the dataset to ensure a thorough analysis.
 
 **Evaluating Data Validity**:
+
 The food sales dataset undergoes a quality assessment to provide a clear snapshot of sales performance across various products, cities, and categories, offering both high-level summaries and detailed views of sales during the 2020-2021 timeframe.
 > 1. Reliability: The analysis is based on a simulated dataset containing 244 sales records from 2020-2021, representing multiple cities and product categories.
 > 2. Originality: Although the data is artificially generated for educational purposes, it facilitates an in-depth examination of sales trends across products, categories, and geographic regions.
@@ -336,50 +337,182 @@ We'll begin by analyzing the data through visualizations to uncover key insights
 
 **Sales by product**
 ```r
-ggplot(data = my_sales_clean_data, aes(x=product, y=total_price, fill=product)) +
-geom_col()+
-theme(axis.text.x = element_text( angle = 30, color = "dark blue")) +
-labs(title ="Sales by Product",
-       caption = "Sample sales data downloaded for test purposes",
-       x="Product",
-       y="Total Sales")
-       knitr::include_graphics("Images/Sales_by_product.png")
+ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = product)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 30, color = "dark blue")) +
+  labs(
+    title = "Product-Wise Sales Analysis",
+    caption = "Visualization based on sample data for testing purposes",
+    x = "Product Name",
+    y = "Total Sales ($)"
+  ) +
+  guides(fill = guide_legend(title = "Product Categories"))
 ```
-The chart provides a clear representation of total sales for each product, allowing for an in-depth analysis of sales performance. Below are key takeaways from the data:
+![Sales by Product](Images/Sales_by_product.png)
 
-1. **Top-Performing Products**
+Looking at the product-level sales data, here are the key insights:
 
-Chocolate Chip and Oatmeal Raisin lead in total sales, significantly outperforming other products.
-> 1. This indicates high customer preference or successful marketing strategies for these items.
-> 2. These products could be considered the "star performers" of the sales portfolio, and further efforts could focus on sustaining or expanding their market reach.
+> 1. Carrot and Oatmeal Raisin products are the top performers, each with approximately 7,000 sales units, suggesting a strong consumer preference for these flavors.
+> 2. Arrowroot is the third-best seller with around 5,000 units, performing notably well for a less common flavor.
+> 3. Chocolate Chip shows solid performance with roughly 4,500 units, aligning with typical consumer preferences for chocolate products.
+There's a significant drop in sales volume between the top performers and lower-selling products like Potato Chips and Pretzels, which barely reach 2,000 units.
+> 4. Banana has the lowest sales volume of all products, suggesting it might be worth reconsidering its place in the product lineup.
 
-2. **Low-Performing Products**
+**Recommendations**
+A key recommendation would be to investigate what makes Carrot and Oatmeal Raisin products so successful - whether it's marketing, pricing, placement, or product quality - and apply those learnings to boost performance of lower-selling items. Additionally, given Banana's poor performance, resources might be better allocated to expanding successful product lines or developing new flavors based on the top performers' characteristics.
 
-Products like Banana, Bran, and Pretzels exhibit the lowest sales.
-> 1. This may indicate limited customer interest, insufficient promotion, or lower availability.
-> 2. These items might require a closer evaluation, such as assessing their pricing, distribution, or appeal to target customers.
-> 3. Alternatively, it could indicate a potential need to phase out underperforming products if efforts to improve sales don't yield results.
+Sales by City by Category (wrap)
+```r
+  ggplot(data = my_sales_clean_data)+ geom_col(mapping = aes(x= category, y= total_price, fill =category))+
+   facet_wrap(~city, ncol = 2) +
+  labs(title ="Sales by City by Category",
+    	caption = "Visualization based on sample data for testing purposes",
+    	x="Category",
+    	y="Total Sales")
+    	
+  library(ggplot2)
+library(scales)
 
-3. **Moderate Performers**
+ggplot(data = my_sales_clean_data) +
+  # Bar chart with improved aesthetics
+  geom_col(
+    mapping = aes(x = category, y = total_price, fill = category),
+    width = 0.7,  # Slightly thinner bars
+    show.legend = FALSE  # Remove legend since colors are directly labeled
+  ) +
+  
+  # Wrap plots in 2 columns
+  facet_wrap(~city, ncol = 2, scales = "free_y") +
+  
+  # Custom color palette
+  scale_fill_brewer(palette = "Set2") +
+  
+  # Format y-axis with comma separator and proper breaks
+  scale_y_continuous(
+    labels = scales::comma_format(),
+    breaks = seq(0, 8000, by = 2000),
+    expand = expansion(mult = c(0, 0.1))
+  ) +
+  
+  # Apply clean theme with improvements
+  theme_minimal() +
+  theme(
+    # Panel customization
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.spacing = unit(2, "lines"),
+    
+    # Text styling
+    plot.title = element_text(
+      size = 16, 
+      face = "bold",
+      margin = margin(b = 20)
+    ),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    
+    # Facet label styling
+    strip.text = element_text(
+      size = 12,
+      face = "bold",
+      margin = margin(b = 10)
+    ),
+    
+    # Caption styling
+    plot.caption = element_text(
+      hjust = 0,
+      size = 9,
+      margin = margin(t = 15)
+    )
+  ) +
+  
+  # Labels
+  labs(
+    title = "Sales by City by Category",
+    caption = "Visualization based on sample data for testing purposes",
+    x = "Category",
+    y = "Total Sales ($)",
+  )  	
+```
+![Sales by Product](Images/Sales_by_city_category(wrap).png)
 
-Products such as Arrowroot, Carrot, and Whole Wheat show moderate sales levels.These products might benefit from targeted marketing campaigns to boost sales and move closer to the top-performing category.
+Based on the sales data visualization across four major cities, here are the key insights:
 
-4. **Product Diversification and Market Trends**
+1. Cookies are consistently the best-selling category across all cities, with Boston showing the highest cookie sales at approximately 6,000 units.
 
-The variety of products suggests a diverse product line aimed at catering to various consumer preferences. However, the significant disparity in sales between the top and bottom products suggests the need for a better understanding of market trends or consumer behavior.
+2. Bars are the second most popular category, with relatively consistent sales across cities (ranging from about 1,500 to 3,500 units).
 
-5. **Recommendations**
+3. Boston appears to be the strongest market overall, showing higher sales volumes across most categories, particularly in cookies and crackers.
 
-> 1. **Enhance Marketing**: Focus on promoting low-performing products (e.g., Banana and Bran) through strategic marketing campaigns, discounts, or bundling with top-performing items.
-> 2. **Product Assessment**: Analyze whether the underperforming products align with customer preferences and market demand.
-> 3. **Leverage High Performers**: Build promotional campaigns around the popularity of Chocolate Chip and Oatmeal Raisin to attract even more customers.
-> 4. **Review Pricing and Availability**: Ensure all products are priced competitively and widely available to customers.
+4. Los Angeles and San Diego show similar sales patterns but at different scales, with Los Angeles having higher overall volumes.
+
+5. Crackers and Snacks are the lowest-performing categories in all cities, with particularly low sales in Los Angeles and San Diego.
+
+**Recommendations**
+A potential opportunity would be to investigate why the West Coast cities (Los Angeles and San Diego) have significantly lower cracker sales compared to Boston, and whether there are regional preferences that could inform product strategy.
+
+**Sales by City by Category(grid)**
+```r
+library(scales)
+ggplot(data = my_sales_clean_data) +
+  # Bar chart with product fill
+  geom_col(mapping = aes(x = category, y = total_price, fill = product)) +
+  
+  # Facet by city
+  facet_grid(~city) +
+  
+  # Improve visual styling
+  theme_minimal() +
+  theme(
+    # Rotate and style x-axis labels
+    axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
+    # Add panel grid styling
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    # Improve title and subtitle appearance
+    plot.title = element_text(size = 16, face = "bold", margin = margin(b = 10)),
+    plot.subtitle = element_text(size = 12, margin = margin(b = 10)),
+    # Add spacing between facets
+    panel.spacing = unit(1, "lines"),
+    # Improve legend positioning
+    legend.position = "right"
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  # Add labels
+  labs(
+    title = "Sales By City By Category",
+    subtitle = "Products by Category",
+    caption = "Visualization based on sample data for testing purposes",
+    x = "Product Category",
+    y = "Total Sales ($)",
+    fill = "Product"  
+  )
+```
+![Sales by Product](Images/Sales_by_City_Category(grid).png)
+
+Looking at the sales breakdown by city and product category, here are the key insights:
+
+1. Product Mix Analysis:
+- Cookies are dominated by Chocolate Chip and Oatmeal Raisin across all cities
+- Bars category shows a consistent mix of Carrot, Bran, and Arrowroot
+- Crackers and Snacks categories have much lower sales overall and simpler product mix
+
+2. Regional Patterns:
+- Boston shows the strongest performance overall, especially in Cookies
+- New York and Los Angeles have similar patterns but at lower volumes than Boston
+- San Diego consistently shows the lowest sales across all categories
+
+3. Notable Opportunities:
+- The success of Chocolate Chip and Oatmeal Raisin cookies in Boston could be studied and replicated in other cities
+- The significant drop between East Coast (Boston/NY) and West Coast (LA/San Diego) performance suggests potential for market development
+- Banana products show consistently low performance across all categories and cities, suggesting a need for product review
+
+**Recommendations**:
+Focus on understanding why Boston's market performs so well and apply those learnings to boost performance in West Coast markets, particularly San Diego.
 
 ```r
 ```
 ```r
-```
-```r
-```
-```r
+
 ```
