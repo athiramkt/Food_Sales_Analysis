@@ -511,8 +511,489 @@ Looking at the sales breakdown by city and product category, here are the key in
 **Recommendations**:
 Focus on understanding why Boston's market performs so well and apply those learnings to boost performance in West Coast markets, particularly San Diego.
 
+**Sales by Order date**:
 ```r
-```
-```r
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(scales)
 
+my_sales_clean_data %>%
+  # Data preparation
+  mutate(
+    month_name = month(order_date, label = TRUE),
+    saleyear = year(order_date)
+  ) %>%
+  group_by(saleyear, month_name) %>%
+  summarise(
+    total_sales_by_date = sum(total_price),
+    .groups = 'drop'
+  ) %>%
+  
+  # Create plot
+  ggplot(aes(
+    x = month_name,
+    y = total_sales_by_date,
+    color = factor(saleyear),
+    group = factor(saleyear)
+  )) +
+  # Add lines with points
+  geom_line(linewidth = 1) +
+  geom_point(size = 2.5) +
+  
+  # Custom color palette
+  scale_color_manual(
+    values = c("2020" = "#FF6B6B", "2021" = "#4ECDC4"),
+    name = "Year"
+  ) +
+  
+  # Format y-axis with dollar signs and commas
+  scale_y_continuous(
+    labels = scales::dollar_format(),
+    breaks = seq(800, 2400, by = 400),
+    expand = expansion(mult = c(0.02, 0.1))
+  ) +
+  
+  # Apply clean theme with improvements
+  theme_minimal() +
+  theme(
+    # Panel customization
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    
+    # Text styling
+    plot.title = element_text(
+      size = 16,
+      face = "bold",
+      margin = margin(b = 10)
+    ),
+    plot.subtitle = element_text(
+      size = 12,
+      margin = margin(b = 20)
+    ),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,
+      color = "black"
+    ),
+    
+    # Legend styling
+    legend.position = "top",
+    legend.title = element_text(face = "bold"),
+    
+    # Caption styling
+    plot.caption = element_text(
+      hjust = 0,
+      size = 9,
+      margin = margin(t = 20)
+    )
+  ) +
+  
+  # Labels
+  labs(
+    title = "Monthly Sales Comparison (2020 vs 2021)",
+    subtitle = "Year-over-Year Monthly Sales Performance",
+    caption = "Visualization based on sample data for testing purposes",
+    x = "Month",
+    y = "Total Sales"
+  )
 ```
+![Sales by Product](Images/Sales_by_Orderdate.png)
+
+Looking at the year-over-year monthly sales comparison between 2020 and 2021, here are the key insights:
+
+1. Seasonal Patterns:
+- Both years show significant monthly fluctuations
+- Peak sales occurred in June 2020 (~$2,400) and November 2021 (~$2,000)
+- Both years tend to have lower sales in July-August period
+
+2. Year-over-Year Changes:
+- Sales patterns shifted significantly between 2020 and 2021
+- 2020 had a notable spike in June that wasn't repeated in 2021
+- 2021 showed stronger performance in Q4 (October-December) compared to 2020
+- Early months (January-March) were relatively stable across both years
+
+3. Notable Trends:
+- 2020 showed more volatile sales patterns with sharp peaks and troughs
+- 2021 demonstrated more consistent sales levels, especially in the second half
+- The lowest sales point shifted from February 2020 to September 2021
+
+**Recommendation**:
+- The more stable pattern in 2021 might indicate improved inventory management or more consistent marketing efforts
+- The shift in peak sales months suggests a need for flexible resource allocation throughout the year
+- Understanding the success factors behind the strong Q4 2021 performance could help in planning future strategies
+
+**Month Sales By Product(2020)**
+```r
+my_sales_clean_data %>%
+  # Data preparation
+  mutate(
+    month_name = month(order_date, label = TRUE),
+    saleyear = year(order_date)
+  ) %>%
+  filter(saleyear == 2020) %>%
+  group_by(month_name, category) %>%
+  summarise(
+    total_sales_by_date = sum(total_price),
+    .groups = 'drop'
+  ) %>%
+  
+  # Create plot
+  ggplot(aes(
+    x = month_name,
+    y = total_sales_by_date,
+    color = category,
+    group = category
+  )) +
+  # Add styled lines and points
+  geom_line(linewidth = 1) +
+  geom_point(size = 3, alpha = 0.7) +
+  
+  # Custom color palette
+  scale_color_brewer(
+    palette = "Set2",
+    name = "Product Category"
+  ) +
+  
+  # Format y-axis with dollar signs and commas
+  scale_y_continuous(
+    labels = scales::dollar_format(),
+    breaks = scales::pretty_breaks(n = 6),
+    expand = expansion(mult = c(0.02, 0.1))
+  ) +
+  
+  # Apply clean theme with improvements
+  theme_minimal() +
+  theme(
+    # Panel customization
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    
+    # Text styling
+    plot.title = element_text(
+      size = 16,
+      face = "bold",
+      margin = margin(b = 10)
+    ),
+    plot.subtitle = element_text(
+      size = 12,
+      color = "grey30",
+      margin = margin(b = 20)
+    ),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,
+      color = "black"
+    ),
+    
+    # Legend styling
+    legend.position = "right",
+    legend.title = element_text(face = "bold"),
+    legend.background = element_rect(fill = "white", color = NA),
+    
+    # Plot margins
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 20),
+    
+    # Caption styling
+    plot.caption = element_text(
+      hjust = 0,
+      size = 9,
+      margin = margin(t = 20)
+    )
+  ) +
+  
+  # Labels
+  labs(
+    title = "Monthly Sales by Product Category (2020)",
+    subtitle = "Tracking sales performance across different product categories",
+    caption = "Visualization based on sample data for testing purposes",
+    x = "Month",
+    y = "Total Sales ($)"
+  )
+```
+![Sales by Product](Images/Monthly_sales_by product.png)
+
+Looking at the monthly sales trends across product categories in 2020, here are the key insights:
+
+Category Rankings and Patterns:
+1. Cookies (coral line) is the top performer, showing peaks of around $1,200 in December and consistent leadership throughout the year
+2. Bars (mint green line) maintains second position with more moderate sales around $400-700
+3. Crackers (blue line) shows an interesting spike in January but generally lower performance afterward
+Snacks (pink line) consistently shows the lowest sales, rarely exceeding $200 monthly
+
+Notable Trends:
+1. A a synchronised peak across categories in June, with Cookies and Bars showing a robust performance
+2. There is a general slowdown in all categories over the July–August season
+3. Cookies exhibit considerable volatility, with notable rises in March, June, and December.
+4. Cookies had a strong year-end result, but other categories saw a dip.
+
+**Recommendations**:
+1. Given Cookies' steady success, there may be room to grow this product line.
+2. Targeted marketing or promotional tactics may be necessary during the summer slowdown.
+3. The huge drop in Crackers after January suggests the need to investigate this category's performance difficulties.
+4. Cookies seem to do especially well during the holiday season (December), indicating seasonal opportunities.
+
+**Month Sales By Category**
+```r
+my_sales_clean_data %>%
+  # Data preparation with improved piping
+  mutate(
+    month_name = month(order_date, label = TRUE),
+    saleyear = year(order_date),
+    total_price = round(total_price, 2)  # Ensure consistent decimal places
+  ) %>%
+  filter(saleyear == 2020) %>%
+  group_by(month_name, category) %>%
+  summarise(
+    total_sales_by_date = sum(total_price),
+    .groups = 'drop'  
+  ) %>%
+  
+  # Create enhanced plot
+  ggplot(aes(
+    x = month_name,
+    y = total_sales_by_date,
+    color = category,
+    group = category
+  )) +
+  # Add styled lines and points
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3, shape = 21, fill = "white") +
+  
+  # Add subtle connecting lines between points
+  geom_line(alpha = 0.7) +
+  
+  # Custom color palette and formatting
+  scale_color_brewer(
+    palette = "Set3",
+    name = "Product Category"
+  ) +
+  scale_y_continuous(
+    labels = scales::dollar_format(accuracy = 1),
+    breaks = seq(0, 1500, by = 300),  
+    expand = expansion(mult = c(0.02, 0.1))
+  ) +
+  
+  # Enhanced theme
+  theme_minimal() +
+  theme(
+    # Grid customization
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "gray90"),
+    
+    # Text styling
+    plot.title = element_text(
+      size = 20,
+      face = "bold",
+      margin = margin(b = 15)
+    ),
+    plot.subtitle = element_text(
+      size = 14,
+      color = "gray30",
+      margin = margin(b = 20)
+    ),
+    axis.title = element_text(
+      size = 12,
+      face = "bold"
+    ),
+    axis.text = element_text(size = 11),
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,
+      color = "black"
+    ),
+    
+    # Legend styling
+    legend.position = "right",
+    legend.title = element_text(face = "bold"),
+    legend.text = element_text(size = 10),
+    legend.margin = margin(l = 10),
+    
+    # Overall plot margins
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 20)
+  ) +
+  
+  # Enhanced labels
+  labs(
+    title = "Monthly Sales Trends by Category (2020)",
+    subtitle = "Tracking monthly revenue performance across product categories",
+    caption = "Source: Sample sales data for testing purposes",
+    x = "Month",
+    y = "Total Sales ($)"
+  )
+```
+![Sales by Product](Images/Monthly_salestrend_category.png)
+
+Looking at the monthly sales trends by product category for 2020, here are the key insights:
+
+Category Performance:
+1. Cookies routinely generates revenue, peaking at over $1,000 in March and December
+2. Bars shows steady performance as the second-best category, typically ranging between $400-$600
+3. Crackers had a great start in January (around $800), but saw a big fall after that
+4. Snacks have the lowest but most consistent sales, circling around $200
+
+Seasonal Patterns:
+1. June sees a noticeable mid-year peak for the majority of categories.
+2. Summertime (July–August) sales are lower in every category.
+3. December's strong year-end results, especially for Cookies
+4. Performance in all categories is moderate throughout the spring (March–April).
+
+**Recommendations**:
+1. Analyse the elements that contributed to Cookies' strong performance in order to see if they may be applied to other categories.
+2. Explore the reasons for Crackers' dramatic decline after January
+3. Consider seasonal promotions to boost the traditionally slower summer months
+4. Create strategies to take advantage of the robust December sales period, especially for non-cookie categories.
+
+**Month Sales By Category**
+
+# Create monthly sales pie chart by category for 2020
+```r
+my_sales_clean_data %>%
+  # Filter for 2020 data first to reduce subsequent computation
+  filter(year(order_date) == 2020) %>%
+  # Group and summarize data
+  group_by(category) %>%
+  summarise(
+    total_sales = sum(total_price),
+    .groups = 'drop'  # Explicitly drop grouping
+  ) %>%
+  # Calculate percentages
+  mutate(
+    sales_percent = total_sales / sum(total_sales),
+    label = scales::percent(sales_percent, accuracy = 0.1)
+  ) %>%
+  # Create pie chart
+  ggplot(aes(x = "", y = sales_percent, fill = category)) +
+  geom_col(
+    color = "white",     # White borders for better separation
+    width = 1,          # Full width for pie segments
+    linewidth = 0.5     # Thinner borders
+  ) +
+  geom_label(
+    aes(label = label),
+    position = position_stack(vjust = 0.5),
+    color = "white",
+    fill = "gray30",    # Dark background for better readability
+    label.size = 0.25,  # Smaller label border
+    show.legend = FALSE
+  ) +
+  coord_polar(theta = "y") +
+  # Improve theme and styling
+  scale_fill_brewer(palette = "Set3") +  # Use colorblind-friendly palette
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Sales Distribution by Category (2020)",
+    caption = "Data source: my_sales_clean_data"
+  )
+```
+![Sales by Product](Images/Sales_Distribution_by Category.png)
+
+Looking at the sales distribution by product category for 2020, here are the key insights:
+
+Category Performance:
+1. The product mix is dominated by cookies, which account for 46.7% of total sales.
+2. At 32.0%, crackers are a powerful secondary category.
+3. Bars make up 13.9% of sales, which is a moderate contribution.
+4. At 7.5%, snacks have the smallest share.
+
+Category Balance:
+1. Baked goods (Cookies and Crackers combined) account for 78.7% of sales
+2. Only 21.4% of categories are non-baked (bars and snacks).
+3. The difference between the top-performing item (cookies) and the lowest-performing one (snacks) is substantial.
+
+**Recommendations**:
+1. Investigate success factors that contributed to Cookies' market dominance in order to perhaps replicate them in other categories.
+2. To improve the underperforming Bars and Snacks divisions, contemplate product development or marketing campaigns.
+3. Determine whether the excessive reliance on cookies is risky and create plans to diversify sources of income.
+4. Evaluate the market potential for increasing Bars and Snacks offerings, given their existing low presence.
+5. Analyse price tactics for each category to maximise the revenue mix.
+
+## Act
+
+1. **Product Strategy**
+   * Leverage Cookies' 46.7% market share by:
+     - Examining popular cookie variations for shared characteristics
+     - Increasing the range of flavours and container sizes
+     - Investigating cross-category applications of successful cookie formulations
+   * Address the 7.5% underperformance of snacks by:
+     - Reformulating and innovating products
+     - Research on consumer preferences
+     - Competitive analysis in the snacks category
+   * Review product portfolio optimization:
+     - Consider consolidating low-performing SKUs
+     - Analyse production costs to revenue contribution.
+     - Test innovative product ideas in stronger categories.
+
+2. **Category Management**
+   * Strengthen category mix:
+     - Create plans to increase the percentage of bars (13.9%) and snacks (7.5%).
+     - Align resources between preserving Cookies' success and expanding other categories.
+     - Make promotional calendars tailored to a particular category.
+   * Cross-category initiatives:
+     - Bundle products across categories
+     - Design multi-category promotions with a theme.
+     - Create cross-merchandising plans.
+
+3. **Distribution Strategy**
+   * Optimize channel performance:
+     - Review distribution coverage by category
+     - Identify high-potential markets for expansion
+     - Develop channel-specific product assortments
+   * Strengthen retail partnerships:
+     - Develop programs for category management.
+     - Execute collaborative business planning
+     - Create promotions tailored to a certain retailer.
+
+4. **Marketing Initiatives**
+   * Category-specific campaigns:
+     - Emphasise your unique selling points.
+     - Focus on various customer segments
+     - Create strategies for digital marketing.
+   * Brand building:
+     - Develop unified messaging for all categories.
+     - Create a social media presence and establish influencer collaborations.
+
+5. **Operational Excellence**
+   * Supply chain optimization:
+     - Review production capacity across categories
+     - Optimize inventory management
+     - Improve forecast accuracy
+   * Cost management:
+     - Evaluate profitability in each category.
+     - Identify cost-saving options and review pricing methods.
+
+**Next Steps**:
+1. Immediate Actions (0-3 months)
+   * Initiate client feedback programs 
+   * Create action plans for weak categories 
+   * Perform extensive category performance analysis
+
+2. Medium-term Goals (3-6 months)
+   * Make modifications to the product portfolio 
+   * Launch new marketing campaigns 
+   * Start distribution optimisation
+
+3. Long-term Initiatives (6-12 months)
+   * Develop an innovation pipeline
+   * Track changes in category performance
+   * Modify strategy in response to outcomes
+
+4. Success Metrics
+   * Monitor changes in market share
+   * Track category growth rates
+   * Assess customer happiness
+   * Examine profitability gains
+
+By building on current strengths, this enlarged framework offers a more thorough method of addressing the category performance gaps.
