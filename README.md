@@ -338,16 +338,27 @@ We'll begin by analyzing the data through visualizations to uncover key insights
 
 **Sales by Product**
 ```r
-ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = Product)) +
+ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = product)) +
   geom_col() +
-  theme(axis.text.x = element_text(angle = 30, color = "dark blue")) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1, color = "darkblue", size = 10),
+    axis.text.y = element_text(color = "darkblue", size = 10),
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5, color = "darkred"),
+    plot.caption = element_text(size = 8, hjust = 0, color = "gray50"),
+    legend.position = "top",                     # Move legend to the top
+    legend.text = element_text(size = 6),       # Increase legend text size
+    legend.title = element_text(face = "bold"),
+    legend.key.width = unit(1.2, "cm")           # Adjust spacing between legend items
+  ) +
   labs(
     title = "Product-Wise Sales Analysis",
-    caption = "Source: Visualization based on sample data for testing purposes"
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Product Name",
     y = "Total Sales ($)"
   ) +
-  guides(fill = guide_legend(title = "Product Categories"))
+  guides(fill = guide_legend(title = "Product"))
+
 ```
 ![Sales by Product](Images/Sales_by_product.png)
 
@@ -367,7 +378,7 @@ A key recommendation would be to investigate what makes Carrot and Oatmeal Raisi
   ggplot(data = my_sales_clean_data)+ geom_col(mapping = aes(x= category, y= total_price, fill =category))+
    facet_wrap(~city, ncol = 2) +
   labs(title ="Sales by City by Category",
-    	caption = "Source: Visualization based on sample data for testing purposes"
+    	caption = "Source: Visualization based on sample data for testing purposes",
     	x="Category",
     	y="Total Sales")
     	
@@ -462,7 +473,7 @@ ggplot(data = my_sales_clean_data) +
   labs(
     title = "Sales By City By Category(grid)",
     subtitle = "Products by Category",
-    caption = "Source: Visualization based on sample data for testing purposes"
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Product Category",
     y = "Total Sales ($)",
     fill = "Product"  
@@ -493,7 +504,6 @@ Focus on understanding why Boston's market performs so well and apply those lear
 **Sales by Order date**:
 ```r
 my_sales_clean_data %>%
- 
   mutate(
     month_name = month(order_date, label = TRUE),
     saleyear = year(order_date)
@@ -556,12 +566,12 @@ my_sales_clean_data %>%
   labs(
     title = "Monthly Sales Comparison (2020 vs 2021)",
     subtitle = "Year-over-Year Monthly Sales Performance",
-    caption = "Source: Visualization based on sample data for testing purposes"
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Month",
     y = "Total Sales($)"
   )
 ```
-![Sales by Product](Images/Sales_by_Orderdate.png)
+![Sales by Product](Images/Sales_by _Orderdate.png)
 
 Looking at the year-over-year monthly sales comparison between 2020 and 2021, here are the key insights:
 
@@ -623,12 +633,12 @@ my_sales_clean_data %>%
     panel.grid.major.x = element_blank(),
  
     plot.title = element_text(
-      size = 16,
+      size = 14,
       face = "bold",
       margin = margin(b = 10)
     ),
     plot.subtitle = element_text(
-      size = 12,
+      size = 10,
       color = "grey30",
       margin = margin(b = 20)
     ),
@@ -653,26 +663,26 @@ my_sales_clean_data %>%
   labs(
     title = "Monthly Sales by Product Category (2020)",
     subtitle = "Tracking sales performance across different product categories",
-    caption = "Source: Visualization based on sample data for testing purposes"
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Month",
     y = "Total Sales ($)"
   )
 ```
-![Sales by Product](Images/Monthly_sales_by product.png)
+![Sales by Product](Images/Monthly_sales_ProductCat(2020).png)
 
 Looking at the monthly sales trends across product categories in 2020, here are the key insights:
 
 > 1. Category Rankings and Patterns:
-- Cookies (coral line) is the top performer, showing peaks of around $1,200 in December and consistent leadership throughout the year
-- Bars (mint green line) maintains second position with more moderate sales around $400-700
-- Crackers (blue line) shows an interesting spike in January but generally lower performance afterward
-Snacks (pink line) consistently shows the lowest sales, rarely exceeding $200 monthly
+> - Cookies (coral line) is the top performer, showing peaks of around $1,200 in December and consistent leadership throughout the year
+> - Bars (mint green line) maintains second position with more moderate sales around $400-700
+> - Crackers (blue line) shows an interesting spike in January but generally lower performance afterward
+> - Snacks (pink line) consistently shows the lowest sales, rarely exceeding $200 monthly
 
 > 2. Notable Trends:
-- A a synchronised peak across categories in June, with Cookies and Bars showing a robust performance
-- There is a general slowdown in all categories over the July–August season
-- Cookies exhibit considerable volatility, with notable rises in March, June, and December.
-- Cookies had a strong year-end result, but other categories saw a dip.
+> - A a synchronised peak across categories in June, with Cookies and Bars showing a robust performance
+> - There is a general slowdown in all categories over the July–August season
+> - Cookies exhibit considerable volatility, with notable rises in March, June, and December.
+> - Cookies had a strong year-end result, but other categories saw a dip.
 
 **Recommendations**:
 - Given Cookies' steady success, there may be room to grow this product line.
@@ -686,7 +696,7 @@ my_sales_clean_data %>%
   mutate(
     month_name = month(order_date, label = TRUE),
     saleyear = year(order_date),
-    total_price = round(total_price, 2)  # Ensure consistent decimal places
+    total_price = round(total_price, 2)  
   ) %>%
   filter(saleyear == 2020) %>%
   group_by(month_name, category) %>%
@@ -752,7 +762,7 @@ my_sales_clean_data %>%
   labs(
     title = "Monthly Sales Trends by Category (2020)",
     subtitle = "Tracking monthly revenue performance across product categories",
-    caption = "Source: Visualization based on sample data for testing purposes"
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Month",
     y = "Total Sales ($)"
   )
