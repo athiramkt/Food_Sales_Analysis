@@ -189,7 +189,9 @@ arrange(desc(total_sales_by_category))
 4 Snacks                     2238.
 ```
 **Finding**: 
-The analysis of total sales by category reveals that cookies are the highest-performing product category, contributing significantly to overall sales with 17,212 units sold. Bars follow with 10,536 units, while crackers and snacks show relatively lower sales figures of 3,340 and 2,238 units, respectively. This indicates a strong customer preference for cookies and bars compared to other product categories.
+> 1.The analysis of total sales by category reveals that cookies are the highest-performing product category, contributing significantly to overall sales with 17,212 units sold. 
+> 2. Bars follow with 10,536 units, while crackers and snacks show relatively lower sales figures of 3,340 and 2,238 units, respectively. 
+This indicates a strong customer preference for cookies and bars compared to other product categories.
 
 **View Sales By Product (Here we do some analysis to check which products had the most sales)**
 ```r
@@ -214,7 +216,10 @@ arrange(desc(total_sales_by_product))
 9 Banana                           179.
 ```
 **Finding**:
-The analysis of total sales by product shows that Carrot and Oatmeal Raisin are the top-performing products, with 7,411 and 7,310 units sold, respectively. Arrowroot and Chocolate Chip follow with 5,330 and 4,572 units. In contrast, Banana and Pretzels have the lowest sales, with just 179 and 586 units sold, respectively. This indicates a strong preference for baked goods like Carrot and Oatmeal Raisin over snack items like Pretzels and Banana.
+> 1. The analysis of total sales by product shows that Carrot and Oatmeal Raisin are the top-performing products, with 7,411 and 7,310 units sold, respectively. 
+> 2. Arrowroot and Chocolate Chip follow with 5,330 and 4,572 units. In contrast, Banana and Pretzels have the lowest sales, with just 179 and 586 units sold, respectively. 
+
+This indicates a strong preference for baked goods like Carrot and Oatmeal Raisin over snack items like Pretzels and Banana.
 
 **View Sales By Order date (Here, we perform an analysis to identify which products had the highest sales during a specific period. The lubridate library is utilized to extract the year and month from the dataset.)**
 
@@ -338,7 +343,7 @@ ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = Prod
   theme(axis.text.x = element_text(angle = 30, color = "dark blue")) +
   labs(
     title = "Product-Wise Sales Analysis",
-    caption = "Source: Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes"
     x = "Product Name",
     y = "Total Sales ($)"
   ) +
@@ -362,7 +367,7 @@ A key recommendation would be to investigate what makes Carrot and Oatmeal Raisi
   ggplot(data = my_sales_clean_data)+ geom_col(mapping = aes(x= category, y= total_price, fill =category))+
    facet_wrap(~city, ncol = 2) +
   labs(title ="Sales by City by Category",
-    	caption = "Source: Visualization based on sample data for testing purposes",
+    	caption = "Source: Visualization based on sample data for testing purposes"
     	x="Category",
     	y="Total Sales")
     	
@@ -373,11 +378,8 @@ ggplot(data = my_sales_clean_data) +
     mapping = aes(x = category, y = total_price, fill = category),
     width = 0.7, 
   ) +
-  
-  # Wrap plots in 2 columns
   facet_wrap(~city, ncol = 2, scales = "free_y") +
-  
-  # Custom color palette
+
   scale_fill_brewer(palette = "Set2") +
   
   scale_y_continuous(
@@ -387,12 +389,11 @@ ggplot(data = my_sales_clean_data) +
   ) +
   theme_minimal() +
   theme(
-    # Panel customization
+
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.spacing = unit(2, "lines"),
-    
-    # Text styling
+  
     plot.title = element_text(
       size = 16, 
       face = "bold",
@@ -401,26 +402,23 @@ ggplot(data = my_sales_clean_data) +
     axis.title = element_text(size = 11),
     axis.text = element_text(size = 10),
     axis.text.x = element_text(angle = 45, hjust = 1),
-    
-    # Facet label styling
+  
     strip.text = element_text(
       size = 12,
       face = "bold",
       margin = margin(b = 10)
     ),
     
-    # Caption styling
     plot.caption = element_text(
       hjust = 0,
       size = 9,
       margin = margin(t = 15)
     )
-  ) +
-  
-  # Labels
+  ) 
+
   labs(
     title = "Sales by City by Category(wrap)",
-    caption = "Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes"
     x = "Category",
     y = "Total Sales ($)",
   )  	
@@ -446,30 +444,25 @@ A potential opportunity would be to investigate why the West Coast cities (Los A
 ```r
 library(scales)
 ggplot(data = my_sales_clean_data) +
-  # Bar chart with product fill
-  geom_col(mapping = aes(x = category, y = total_price, fill = product)) +
   
-  # Facet by city
+  geom_col(mapping = aes(x = category, y = total_price, fill = product)) +
   facet_grid(~city) +
   theme_minimal() +
   theme(
-    # Rotate and style x-axis labels
     axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
-    # Add panel grid styling
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
-  
-    plot.title = element_text(size = 16, face = "bold", margin = margin(b = 10)),
+    plot.title = element_text(size = 14, face = "bold", margin = margin(b = 10)),
     plot.subtitle = element_text(size = 12, margin = margin(b = 10)),
     panel.spacing = unit(1, "lines"),
     legend.position = "right"
   ) +
   scale_y_continuous(labels = scales::comma) +
-  # Add labels
+ 
   labs(
     title = "Sales By City By Category(grid)",
     subtitle = "Products by Category",
-    caption = "Source: Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes"
     x = "Product Category",
     y = "Total Sales ($)",
     fill = "Product"  
@@ -500,7 +493,7 @@ Focus on understanding why Boston's market performs so well and apply those lear
 **Sales by Order date**:
 ```r
 my_sales_clean_data %>%
-  # Data preparation
+ 
   mutate(
     month_name = month(order_date, label = TRUE),
     saleyear = year(order_date)
@@ -511,18 +504,15 @@ my_sales_clean_data %>%
     .groups = 'drop'
   ) %>%
   
-  # Create plot
   ggplot(aes(
     x = month_name,
     y = total_sales_by_date,
     color = factor(saleyear),
     group = factor(saleyear)
   )) +
-  # Add lines with points
   geom_line(linewidth = 1) +
   geom_point(size = 2.5) +
   
-  # Custom color palette
   scale_color_manual(
     values = c("2020" = "#FF6B6B", "2021" = "#4ECDC4"),
     name = "Year"
@@ -533,16 +523,14 @@ my_sales_clean_data %>%
     expand = expansion(mult = c(0.02, 0.1))
   ) +
   
-  # Apply clean theme with improvements
   theme_minimal() +
   theme(
-    # Panel customization
+
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
     
-    # Text styling
     plot.title = element_text(
-      size = 16,
+      size = 14,
       face = "bold",
       margin = margin(b = 10)
     ),
@@ -557,24 +545,18 @@ my_sales_clean_data %>%
       hjust = 1,
       color = "black"
     ),
-    
-    # Legend styling
     legend.position = "top",
     legend.title = element_text(face = "bold"),
-    
-    # Caption styling
     plot.caption = element_text(
       hjust = 0,
       size = 9,
       margin = margin(t = 20)
     )
   ) +
-  
-  # Labels
   labs(
     title = "Monthly Sales Comparison (2020 vs 2021)",
     subtitle = "Year-over-Year Monthly Sales Performance",
-    caption = "Source: Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes"
     x = "Month",
     y = "Total Sales($)"
   )
@@ -607,8 +589,7 @@ Looking at the year-over-year monthly sales comparison between 2020 and 2021, he
 **Month Sales By Product(2020)**
 ```r
 my_sales_clean_data %>%
-  # Data preparation
-  mutate(
+   mutate(
     month_name = month(order_date, label = TRUE),
     saleyear = year(order_date)
   ) %>%
@@ -618,37 +599,29 @@ my_sales_clean_data %>%
     total_sales_by_date = sum(total_price),
     .groups = 'drop'
   ) %>%
-  
-  # Create plot
   ggplot(aes(
     x = month_name,
     y = total_sales_by_date,
     color = category,
     group = category
   )) +
-  # Add styled lines and points
   geom_line(linewidth = 1) +
   geom_point(size = 3, alpha = 0.7) +
-  
-  # Custom color palette
   scale_color_brewer(
     palette = "Set2",
     name = "Product Category"
   ) +
-  
   scale_y_continuous(
     labels = scales::dollar_format(),
     breaks = scales::pretty_breaks(n = 6),
     expand = expansion(mult = c(0.02, 0.1))
   ) +
-
   theme_minimal() +
   theme(
-    # Panel customization
+   
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
-    
-    # Text styling
+ 
     plot.title = element_text(
       size = 16,
       face = "bold",
@@ -666,28 +639,21 @@ my_sales_clean_data %>%
       hjust = 1,
       color = "black"
     ),
-    
-    # Legend styling
     legend.position = "right",
     legend.title = element_text(face = "bold"),
     legend.background = element_rect(fill = "white", color = NA),
-    
-    # Plot margins
     plot.margin = margin(t = 20, r = 20, b = 20, l = 20),
-    
-    # Caption styling
     plot.caption = element_text(
       hjust = 0,
       size = 9,
       margin = margin(t = 20)
     )
   ) +
-  
-  # Labels
+
   labs(
     title = "Monthly Sales by Product Category (2020)",
     subtitle = "Tracking sales performance across different product categories",
-    caption = "Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes"
     x = "Month",
     y = "Total Sales ($)"
   )
@@ -717,7 +683,6 @@ Snacks (pink line) consistently shows the lowest sales, rarely exceeding $200 mo
 **Month Sales By Category**
 ```r
 my_sales_clean_data %>%
-  
   mutate(
     month_name = month(order_date, label = TRUE),
     saleyear = year(order_date),
@@ -729,19 +694,15 @@ my_sales_clean_data %>%
     total_sales_by_date = sum(total_price),
     .groups = 'drop'  
   ) %>%
-  
-  # Create enhanced plot
   ggplot(aes(
     x = month_name,
     y = total_sales_by_date,
     color = category,
     group = category
   )) +
-  # Add styled lines and points
+  
   geom_line(linewidth = 1.2) +
   geom_point(size = 3, shape = 21, fill = "white") +
-  
-  # Add subtle connecting lines between points
   geom_line(alpha = 0.7) +
  
   scale_color_brewer(
@@ -756,12 +717,9 @@ my_sales_clean_data %>%
 
   theme_minimal() +
   theme(
-    # Grid customization
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "gray90"),
-    
-    # Text styling
     plot.title = element_text(
       size = 14,
       face = "bold",
@@ -783,21 +741,18 @@ my_sales_clean_data %>%
       color = "black"
     ),
     
-    # Legend styling
     legend.position = "right",
     legend.title = element_text(face = "bold"),
     legend.text = element_text(size = 10),
     legend.margin = margin(l = 10),
     
-    # Overall plot margins
     plot.margin = margin(t = 20, r = 20, b = 20, l = 20)
   ) +
   
-  # Enhanced labels
   labs(
     title = "Monthly Sales Trends by Category (2020)",
     subtitle = "Tracking monthly revenue performance across product categories",
-    caption = "Source: Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes"
     x = "Month",
     y = "Total Sales ($)"
   )
@@ -827,13 +782,13 @@ Looking at the monthly sales trends by product category for 2020, here are the k
 **Month Sales By Category (Create monthly sales pie chart by category for 2020)**
 ```r
 my_sales_clean_data %>%
-  # Filter for 2020 data first to reduce subsequent computation
+  
   filter(year(order_date) == 2020) %>%
 
   group_by(category) %>%
   summarise(
     total_sales = sum(total_price),
-    .groups = 'drop'  # Explicitly drop grouping
+    .groups = 'drop'  
   ) %>%
  
   mutate(
@@ -868,7 +823,7 @@ my_sales_clean_data %>%
   ) +
   labs(
     title = "Sales Distribution by Category (2020)",
-    caption = "Data source: my_sales_clean_data"
+    caption = "Source: Visualization based on sample data for testing purposes"
   )
 ```
 ![Sales by Product](Images/Sales_distribution_category.png)
