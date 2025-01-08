@@ -338,7 +338,7 @@ ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = Prod
   theme(axis.text.x = element_text(angle = 30, color = "dark blue")) +
   labs(
     title = "Product-Wise Sales Analysis",
-    caption = "Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Product Name",
     y = "Total Sales ($)"
   ) +
@@ -362,7 +362,7 @@ A key recommendation would be to investigate what makes Carrot and Oatmeal Raisi
   ggplot(data = my_sales_clean_data)+ geom_col(mapping = aes(x= category, y= total_price, fill =category))+
    facet_wrap(~city, ncol = 2) +
   labs(title ="Sales by City by Category",
-    	caption = "Visualization based on sample data for testing purposes",
+    	caption = "Source: Visualization based on sample data for testing purposes",
     	x="Category",
     	y="Total Sales")
     	
@@ -429,15 +429,15 @@ ggplot(data = my_sales_clean_data) +
 
 Based on the sales data visualization across four major cities, here are the key insights:
 
-1. Cookies are consistently the best-selling category across all cities, with Boston showing the highest cookie sales at approximately 6,000 units.
+> 1. Cookies are consistently the best-selling category across all cities, with Boston showing the highest cookie sales at approximately 6,000 units.
 
-2. Bars are the second most popular category, with relatively consistent sales across cities (ranging from about 1,500 to 3,500 units).
+> 2. Bars are the second most popular category, with relatively consistent sales across cities (ranging from about 1,500 to 3,500 units).
 
-3. Boston appears to be the strongest market overall, showing higher sales volumes across most categories, particularly in cookies and crackers.
+> 3. Boston appears to be the strongest market overall, showing higher sales volumes across most categories, particularly in cookies and crackers.
 
-4. Los Angeles and San Diego show similar sales patterns but at different scales, with Los Angeles having higher overall volumes.
+> 4. Los Angeles and San Diego show similar sales patterns but at different scales, with Los Angeles having higher overall volumes.
 
-5. Crackers and Snacks are the lowest-performing categories in all cities, with particularly low sales in Los Angeles and San Diego.
+> 5. Crackers and Snacks are the lowest-performing categories in all cities, with particularly low sales in Los Angeles and San Diego.
 
 **Recommendations**
 A potential opportunity would be to investigate why the West Coast cities (Los Angeles and San Diego) have significantly lower cracker sales compared to Boston, and whether there are regional preferences that could inform product strategy.
@@ -469,7 +469,7 @@ ggplot(data = my_sales_clean_data) +
   labs(
     title = "Sales By City By Category(grid)",
     subtitle = "Products by Category",
-    caption = "Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Product Category",
     y = "Total Sales ($)",
     fill = "Product"  
@@ -479,17 +479,17 @@ ggplot(data = my_sales_clean_data) +
 
 Looking at the sales breakdown by city and product category, here are the key insights:
 
-1. Product Mix Analysis:
+> 1. Product Mix Analysis:
 - Cookies are dominated by Chocolate Chip and Oatmeal Raisin across all cities
 - Bars category shows a consistent mix of Carrot, Bran, and Arrowroot
 - Crackers and Snacks categories have much lower sales overall and simpler product mix
 
-2. Regional Patterns:
+> 2. Regional Patterns:
 - Boston shows the strongest performance overall, especially in Cookies
 - New York and Los Angeles have similar patterns but at lower volumes than Boston
 - San Diego consistently shows the lowest sales across all categories
 
-3. Notable Opportunities:
+> 3. Notable Opportunities:
 - The success of Chocolate Chip and Oatmeal Raisin cookies in Boston could be studied and replicated in other cities
 - The significant drop between East Coast (Boston/NY) and West Coast (LA/San Diego) performance suggests potential for market development
 - Banana products show consistently low performance across all categories and cities, suggesting a need for product review
@@ -574,7 +574,7 @@ my_sales_clean_data %>%
   labs(
     title = "Monthly Sales Comparison (2020 vs 2021)",
     subtitle = "Year-over-Year Monthly Sales Performance",
-    caption = "Visualization based on sample data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Month",
     y = "Total Sales($)"
   )
@@ -583,18 +583,18 @@ my_sales_clean_data %>%
 
 Looking at the year-over-year monthly sales comparison between 2020 and 2021, here are the key insights:
 
-1. Seasonal Patterns:
+> 1. Seasonal Patterns:
 - Both years show significant monthly fluctuations
 - Peak sales occurred in June 2020 ($2,400) and November 2021 ($2,000)
 - Both years tend to have lower sales in July-August period
 
-2. Year-over-Year Changes:
+> 2. Year-over-Year Changes:
 - Sales patterns shifted significantly between 2020 and 2021
 - 2020 had a notable spike in June that wasn't repeated in 2021
 - 2021 showed stronger performance in Q4 (October-December) compared to 2020
 - Early months (January-March) were relatively stable across both years
 
-3. Notable Trends:
+> 3. Notable Trends:
 - 2020 showed more volatile sales patterns with sharp peaks and troughs
 - 2021 demonstrated more consistent sales levels, especially in the second half
 - The lowest sales point shifted from February 2020 to September 2021
@@ -696,28 +696,28 @@ my_sales_clean_data %>%
 
 Looking at the monthly sales trends across product categories in 2020, here are the key insights:
 
-Category Rankings and Patterns:
-1. Cookies (coral line) is the top performer, showing peaks of around $1,200 in December and consistent leadership throughout the year
-2. Bars (mint green line) maintains second position with more moderate sales around $400-700
-3. Crackers (blue line) shows an interesting spike in January but generally lower performance afterward
+> 1. Category Rankings and Patterns:
+- Cookies (coral line) is the top performer, showing peaks of around $1,200 in December and consistent leadership throughout the year
+- Bars (mint green line) maintains second position with more moderate sales around $400-700
+- Crackers (blue line) shows an interesting spike in January but generally lower performance afterward
 Snacks (pink line) consistently shows the lowest sales, rarely exceeding $200 monthly
 
-Notable Trends:
-1. A a synchronised peak across categories in June, with Cookies and Bars showing a robust performance
-2. There is a general slowdown in all categories over the July–August season
-3. Cookies exhibit considerable volatility, with notable rises in March, June, and December.
-4. Cookies had a strong year-end result, but other categories saw a dip.
+> 2. Notable Trends:
+- A a synchronised peak across categories in June, with Cookies and Bars showing a robust performance
+- There is a general slowdown in all categories over the July–August season
+- Cookies exhibit considerable volatility, with notable rises in March, June, and December.
+- Cookies had a strong year-end result, but other categories saw a dip.
 
 **Recommendations**:
-1. Given Cookies' steady success, there may be room to grow this product line.
-2. Targeted marketing or promotional tactics may be necessary during the summer slowdown.
-3. The huge drop in Crackers after January suggests the need to investigate this category's performance difficulties.
-4. Cookies seem to do especially well during the holiday season (December), indicating seasonal opportunities.
+- Given Cookies' steady success, there may be room to grow this product line.
+- Targeted marketing or promotional tactics may be necessary during the summer slowdown.
+- The huge drop in Crackers after January suggests the need to investigate this category's performance difficulties.
+- Cookies seem to do especially well during the holiday season (December), indicating seasonal opportunities.
 
 **Month Sales By Category**
 ```r
 my_sales_clean_data %>%
-  # Data preparation with improved piping
+  
   mutate(
     month_name = month(order_date, label = TRUE),
     saleyear = year(order_date),
@@ -743,8 +743,7 @@ my_sales_clean_data %>%
   
   # Add subtle connecting lines between points
   geom_line(alpha = 0.7) +
-  
-  # Custom color palette and formatting
+ 
   scale_color_brewer(
     palette = "Set3",
     name = "Product Category"
@@ -754,8 +753,7 @@ my_sales_clean_data %>%
     breaks = seq(0, 1500, by = 300),  
     expand = expansion(mult = c(0.02, 0.1))
   ) +
-  
-  # Enhanced theme
+
   theme_minimal() +
   theme(
     # Grid customization
@@ -765,14 +763,14 @@ my_sales_clean_data %>%
     
     # Text styling
     plot.title = element_text(
-      size = 20,
+      size = 14,
       face = "bold",
-      margin = margin(b = 15)
+      margin = margin(b = 10)
     ),
     plot.subtitle = element_text(
-      size = 14,
+      size = 10,
       color = "gray30",
-      margin = margin(b = 20)
+      margin = margin(b = 10)
     ),
     axis.title = element_text(
       size = 12,
@@ -799,26 +797,26 @@ my_sales_clean_data %>%
   labs(
     title = "Monthly Sales Trends by Category (2020)",
     subtitle = "Tracking monthly revenue performance across product categories",
-    caption = "Source: Sample sales data for testing purposes",
+    caption = "Source: Visualization based on sample data for testing purposes",
     x = "Month",
     y = "Total Sales ($)"
   )
 ```
-![Sales by Product](Images/Monthly_salestrend_category.png)
+![Sales by Product](Images/Monthly_sales_trend_cat(2020).png)
 
 Looking at the monthly sales trends by product category for 2020, here are the key insights:
 
-Category Performance:
-1. Cookies routinely generates revenue, peaking at over $1,000 in March and December
-2. Bars shows steady performance as the second-best category, typically ranging between $400-$600
-3. Crackers had a great start in January (around $800), but saw a big fall after that
-4. Snacks have the lowest but most consistent sales, circling around $200
+> 1.Category Performance:
+- Cookies routinely generates revenue, peaking at over $1,000 in March and December
+- Bars shows steady performance as the second-best category, typically ranging between $400-$600
+- Crackers had a great start in January (around $800), but saw a big fall after that
+- Snacks have the lowest but most consistent sales, circling around $200
 
-Seasonal Patterns:
-1. June sees a noticeable mid-year peak for the majority of categories.
-2. Summertime (July–August) sales are lower in every category.
-3. December's strong year-end results, especially for Cookies
-4. Performance in all categories is moderate throughout the spring (March–April).
+> 2.Seasonal Patterns:
+- June sees a noticeable mid-year peak for the majority of categories.
+- Summertime (July–August) sales are lower in every category.
+- December's strong year-end results, especially for Cookies
+- Performance in all categories is moderate throughout the spring (March–April).
 
 **Recommendations**:
 1. Analyse the elements that contributed to Cookies' strong performance in order to see if they may be applied to other categories.
@@ -827,8 +825,7 @@ Seasonal Patterns:
 4. Create strategies to take advantage of the robust December sales period, especially for non-cookie categories.
 
 **Month Sales By Category**
-
-# Create monthly sales pie chart by category for 2020
+Create monthly sales pie chart by category for 2020
 ```r
 my_sales_clean_data %>%
   # Filter for 2020 data first to reduce subsequent computation
@@ -847,21 +844,21 @@ my_sales_clean_data %>%
   # Create pie chart
   ggplot(aes(x = "", y = sales_percent, fill = category)) +
   geom_col(
-    color = "white",     # White borders for better separation
-    width = 1,          # Full width for pie segments
-    linewidth = 0.5     # Thinner borders
+    color = "white",    
+    width = 1,         
+    linewidth = 0.5     
   ) +
   geom_label(
     aes(label = label),
     position = position_stack(vjust = 0.5),
     color = "white",
-    fill = "gray30",    # Dark background for better readability
-    label.size = 0.25,  # Smaller label border
+    fill = "gray30",   
+    label.size = 0.25,  
     show.legend = FALSE
   ) +
   coord_polar(theta = "y") +
   # Improve theme and styling
-  scale_fill_brewer(palette = "Set3") +  # Use colorblind-friendly palette
+  scale_fill_brewer(palette = "Set3") + 
   theme_minimal() +
   theme(
     axis.text = element_blank(),
@@ -879,16 +876,17 @@ my_sales_clean_data %>%
 
 Looking at the sales distribution by product category for 2020, here are the key insights:
 
-Category Performance:
-1. The product mix is dominated by cookies, which account for 46.7% of total sales.
-2. At 32.0%, crackers are a powerful secondary category.
-3. Bars make up 13.9% of sales, which is a moderate contribution.
-4. At 7.5%, snacks have the smallest share.
+> 1. Category Performance:
+- The product mix is dominated by cookies, which account for 46.7% of total sales.
+- At 32.0%, crackers are a powerful secondary category.
+- Bars make up 13.9% of sales, which is a moderate contribution.
+- At 7.5%, snacks have the smallest share.
 
-Category Balance:
-1. Baked goods (Cookies and Crackers combined) account for 78.7% of sales
-2. Only 21.4% of categories are non-baked (bars and snacks).
-3. The difference between the top-performing item (cookies) and the lowest-performing one (snacks) is substantial.
+> 2. Category Balance:
+- Baked goods (Cookies and Crackers combined) account for 78.7% of sales
+- Only 21.4% of categories are non-baked (bars and snacks).
+- 
+The difference between the top-performing item (cookies) and the lowest-performing one (snacks) is substantial.
 
 **Recommendations**:
 1. Investigate success factors that contributed to Cookies' market dominance in order to perhaps replicate them in other categories.
@@ -968,10 +966,10 @@ In the final step of the data analysis process, we will provide recommendations 
    * Track changes in category performance
    * Modify strategy in response to outcomes
 
-4. Success Metrics
-   * Monitor changes in market share
-   * Track category growth rates
-   * Assess customer happiness
-   * Examine profitability gains
+Success metrics serve as the foundation for evaluating the overall performance and impact of our strategies. By monitoring changes in market share, we can measure the company’s competitive positioning within the industry. 
 
-By building on current strengths, this enlarged framework offers a more thorough method of addressing the category performance gaps.
+> 1. Tracking category growth rates helps us identify emerging trends and opportunities for expansion. 
+> 2. Assessing customer happiness ensures that our efforts align with customer satisfaction and loyalty, which are critical for sustained success. 
+> 3. Finally, examining profitability gains provides a clear picture of the financial health and efficiency of our initiatives. 
+
+Together, these metrics offer a comprehensive view of our progress, enabling us to make data-driven decisions and refine our strategies for long-term growth and success.
