@@ -37,14 +37,10 @@ The food sales dataset undergoes a quality assessment to provide a clear snapsho
 > 4. Currency: The dataset focuses on sales data from 2020-2021.
 > 5. Limitations: As the dataset is simulated and covers a limited timeframe, its primary purpose is to serve as a learning tool rather than a definitive source for business decision-making.
 
-
-# Install and load packages to setup the environment
+**Install and load packages to setup the environment**
 The data is imported from an excel document into a dataframe called foodsales.
 
-# Sales Data Analysis in R
-
 **Data Import and Setup**
-
 ```r
 install.packages("readxl")
 library(readxl)
@@ -136,7 +132,7 @@ tibble [244 × 8] (S3: tbl_df/tbl/data.frame)
 ```
 **Clean Data**: To ensure data quality and consistency, we'll clean and tidy the datasets. This involves handling missing values, outliers, and inconsistencies in data formats.
 
-**Clean the column names and check if all data types are correct**
+**Clean the column names and check if all data types are correct.**
 
 ```r
 my_sales_clean_data <- clean_names(foodsales) # Clean the column names
@@ -195,7 +191,7 @@ arrange(desc(total_sales_by_category))
 **Finding**: 
 The analysis of total sales by category reveals that cookies are the highest-performing product category, contributing significantly to overall sales with 17,212 units sold. Bars follow with 10,536 units, while crackers and snacks show relatively lower sales figures of 3,340 and 2,238 units, respectively. This indicates a strong customer preference for cookies and bars compared to other product categories.
 
-**View Sales By Product (Here we do some analysis to check which Products had the most sales)**
+**View Sales By Product (Here we do some analysis to check which products had the most sales)**
 ```r
  my_sales_clean_data %>%
   select(city, category, product,order_date, quantity, unit_price, total_price) %>%
@@ -294,7 +290,7 @@ my_sales_clean_data %>%
 12 Feb                       926.
 ```
 **Finding**:
-Analysis of Total Sales by Month:
+**Analysis of Total Sales by Month**:
 
 > 1. Top-Performing Month:
         June recorded the highest sales at 2,309 units, indicating strong consumer demand during this period.
@@ -335,9 +331,9 @@ Cookies dominate sales with 17,212 units, accounting for the largest share, foll
 
 We'll begin by analyzing the data through visualizations to uncover key insights and present our findings in a clear and impactful manner to the marketing team and other stakeholders.
 
-**Sales by product**
+**Sales by Product**
 ```r
-ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = product)) +
+ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = Product)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 30, color = "dark blue")) +
   labs(
@@ -358,10 +354,10 @@ Looking at the product-level sales data, here are the key insights:
 There's a significant drop in sales volume between the top performers and lower-selling products like Potato Chips and Pretzels, which barely reach 2,000 units.
 > 4. Banana has the lowest sales volume of all products, suggesting it might be worth reconsidering its place in the product lineup.
 
-**Recommendations**
+**Recommendations**:
 A key recommendation would be to investigate what makes Carrot and Oatmeal Raisin products so successful - whether it's marketing, pricing, placement, or product quality - and apply those learnings to boost performance of lower-selling items. Additionally, given Banana's poor performance, resources might be better allocated to expanding successful product lines or developing new flavors based on the top performers' characteristics.
 
-Sales by City by Category (wrap)
+**Sales by City by Category (wrap)**
 ```r
   ggplot(data = my_sales_clean_data)+ geom_col(mapping = aes(x= category, y= total_price, fill =category))+
    facet_wrap(~city, ncol = 2) +
@@ -372,13 +368,10 @@ Sales by City by Category (wrap)
     	
   library(ggplot2)
 library(scales)
-
 ggplot(data = my_sales_clean_data) +
-  # Bar chart with improved aesthetics
   geom_col(
     mapping = aes(x = category, y = total_price, fill = category),
-    width = 0.7,  # Slightly thinner bars
-    show.legend = FALSE  # Remove legend since colors are directly labeled
+    width = 0.7, 
   ) +
   
   # Wrap plots in 2 columns
@@ -387,14 +380,11 @@ ggplot(data = my_sales_clean_data) +
   # Custom color palette
   scale_fill_brewer(palette = "Set2") +
   
-  # Format y-axis with comma separator and proper breaks
   scale_y_continuous(
     labels = scales::comma_format(),
     breaks = seq(0, 8000, by = 2000),
     expand = expansion(mult = c(0, 0.1))
   ) +
-  
-  # Apply clean theme with improvements
   theme_minimal() +
   theme(
     # Panel customization
@@ -429,7 +419,7 @@ ggplot(data = my_sales_clean_data) +
   
   # Labels
   labs(
-    title = "Sales by City by Category",
+    title = "Sales by City by Category(wrap)",
     caption = "Visualization based on sample data for testing purposes",
     x = "Category",
     y = "Total Sales ($)",
@@ -461,8 +451,6 @@ ggplot(data = my_sales_clean_data) +
   
   # Facet by city
   facet_grid(~city) +
-  
-  # Improve visual styling
   theme_minimal() +
   theme(
     # Rotate and style x-axis labels
@@ -470,18 +458,16 @@ ggplot(data = my_sales_clean_data) +
     # Add panel grid styling
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
-    # Improve title and subtitle appearance
+  
     plot.title = element_text(size = 16, face = "bold", margin = margin(b = 10)),
     plot.subtitle = element_text(size = 12, margin = margin(b = 10)),
-    # Add spacing between facets
     panel.spacing = unit(1, "lines"),
-    # Improve legend positioning
     legend.position = "right"
   ) +
   scale_y_continuous(labels = scales::comma) +
   # Add labels
   labs(
-    title = "Sales By City By Category",
+    title = "Sales By City By Category(grid)",
     subtitle = "Products by Category",
     caption = "Visualization based on sample data for testing purposes",
     x = "Product Category",
@@ -513,11 +499,6 @@ Focus on understanding why Boston's market performs so well and apply those lear
 
 **Sales by Order date**:
 ```r
-library(ggplot2)
-library(dplyr)
-library(lubridate)
-library(scales)
-
 my_sales_clean_data %>%
   # Data preparation
   mutate(
@@ -546,8 +527,6 @@ my_sales_clean_data %>%
     values = c("2020" = "#FF6B6B", "2021" = "#4ECDC4"),
     name = "Year"
   ) +
-  
-  # Format y-axis with dollar signs and commas
   scale_y_continuous(
     labels = scales::dollar_format(),
     breaks = seq(800, 2400, by = 400),
@@ -597,7 +576,7 @@ my_sales_clean_data %>%
     subtitle = "Year-over-Year Monthly Sales Performance",
     caption = "Visualization based on sample data for testing purposes",
     x = "Month",
-    y = "Total Sales"
+    y = "Total Sales($)"
   )
 ```
 ![Sales by Product](Images/Sales_by_Orderdate.png)
@@ -606,7 +585,7 @@ Looking at the year-over-year monthly sales comparison between 2020 and 2021, he
 
 1. Seasonal Patterns:
 - Both years show significant monthly fluctuations
-- Peak sales occurred in June 2020 (~$2,400) and November 2021 (~$2,000)
+- Peak sales occurred in June 2020 ($2,400) and November 2021 ($2,000)
 - Both years tend to have lower sales in July-August period
 
 2. Year-over-Year Changes:
@@ -657,14 +636,12 @@ my_sales_clean_data %>%
     name = "Product Category"
   ) +
   
-  # Format y-axis with dollar signs and commas
   scale_y_continuous(
     labels = scales::dollar_format(),
     breaks = scales::pretty_breaks(n = 6),
     expand = expansion(mult = c(0.02, 0.1))
   ) +
-  
-  # Apply clean theme with improvements
+
   theme_minimal() +
   theme(
     # Panel customization
@@ -921,6 +898,7 @@ Category Balance:
 5. Analyse price tactics for each category to maximise the revenue mix.
 
 ## Act
+In the final step of the data analysis process, we will provide recommendations to boost customer engagement and drive sales for the food company.
 
 1. **Product Strategy**
    * Leverage Cookies' 46.7% market share by:
