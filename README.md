@@ -824,24 +824,23 @@ Looking at the monthly sales trends by product category for 2020, here are the k
 3. Consider seasonal promotions to boost the traditionally slower summer months
 4. Create strategies to take advantage of the robust December sales period, especially for non-cookie categories.
 
-**Month Sales By Category**
-Create monthly sales pie chart by category for 2020
+**Month Sales By Category (Create monthly sales pie chart by category for 2020)**
 ```r
 my_sales_clean_data %>%
   # Filter for 2020 data first to reduce subsequent computation
   filter(year(order_date) == 2020) %>%
-  # Group and summarize data
+
   group_by(category) %>%
   summarise(
     total_sales = sum(total_price),
     .groups = 'drop'  # Explicitly drop grouping
   ) %>%
-  # Calculate percentages
+ 
   mutate(
     sales_percent = total_sales / sum(total_sales),
     label = scales::percent(sales_percent, accuracy = 0.1)
   ) %>%
-  # Create pie chart
+ 
   ggplot(aes(x = "", y = sales_percent, fill = category)) +
   geom_col(
     color = "white",    
@@ -857,7 +856,7 @@ my_sales_clean_data %>%
     show.legend = FALSE
   ) +
   coord_polar(theta = "y") +
-  # Improve theme and styling
+  
   scale_fill_brewer(palette = "Set3") + 
   theme_minimal() +
   theme(
@@ -872,7 +871,7 @@ my_sales_clean_data %>%
     caption = "Data source: my_sales_clean_data"
   )
 ```
-![Sales by Product](Images/Sales_Distribution_by Category.png)
+![Sales by Product](Images/Sales_distribution_category.png)
 
 Looking at the sales distribution by product category for 2020, here are the key insights:
 
@@ -885,7 +884,7 @@ Looking at the sales distribution by product category for 2020, here are the key
 > 2. Category Balance:
 - Baked goods (Cookies and Crackers combined) account for 78.7% of sales
 - Only 21.4% of categories are non-baked (bars and snacks).
-- 
+
 The difference between the top-performing item (cookies) and the lowest-performing one (snacks) is substantial.
 
 **Recommendations**:
