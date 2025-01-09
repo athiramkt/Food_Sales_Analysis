@@ -375,66 +375,63 @@ A key recommendation would be to investigate what makes Carrot and Oatmeal Raisi
 
 **Sales by City by Category (wrap)**
 ```r
-  ggplot(data = my_sales_clean_data)+ geom_col(mapping = aes(x= category, y= total_price, fill =category))+
-   facet_wrap(~city, ncol = 2) +
-  labs(title ="Sales by City by Category",
-    	caption = "Source: Visualization based on sample data for testing purposes",
-    	x="Category",
-    	y="Total Sales")
-    	
-  library(ggplot2)
-library(scales)
 ggplot(data = my_sales_clean_data) +
   geom_col(
     mapping = aes(x = category, y = total_price, fill = category),
-    width = 0.7, 
+    width = 0.7,
+    alpha = 0.9
   ) +
-  facet_wrap(~city, ncol = 2, scales = "free_y") +
-
+  facet_wrap(
+    ~city, 
+    ncol = 2,
+    scales = "free_y"
+  ) +
   scale_fill_brewer(palette = "Set2") +
   
+  # Improved y-axis formatting with specific breaks and labels
   scale_y_continuous(
-    labels = scales::comma_format(),
-    breaks = seq(0, 8000, by = 2000),
-    expand = expansion(mult = c(0, 0.1))
+    labels = scales::label_dollar(scale = 1),  # Format as currency
+    breaks = seq(0, 8000, by = 2000),         # Breaks every 2000
+    limits = c(0, NA),                        # Start at 0
+    expand = expansion(mult = c(0, 0.1))      # Add small padding at top
   ) +
+  
+  labs(
+    title = "Sales by City by Category",
+    caption = "Source: Visualization based on sample data for testing purposes",
+    x = "Category",
+    y = "Total Sales ($)"
+  ) +
+  
   theme_minimal() +
   theme(
-
+    plot.title = element_text(
+      size = 16,
+      face = "bold",
+      margin = margin(t = 10, b = 20)
+    ),
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,
+      vjust = 1
+    ),
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.spacing = unit(2, "lines"),
-  
-    plot.title = element_text(
-      size = 16, 
-      face = "bold",
-      margin = margin(b = 20)
-    ),
-    axis.title = element_text(size = 11),
-    axis.text = element_text(size = 10),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-  
     strip.text = element_text(
       size = 12,
-      face = "bold",
-      margin = margin(b = 10)
+      face = "bold"
     ),
-    
     plot.caption = element_text(
       hjust = 0,
       size = 9,
       margin = margin(t = 15)
-    )
-  ) 
-
-  labs(
-    title = "Sales by City by Category(wrap)",
-    caption = "Source: Visualization based on sample data for testing purposes"
-    x = "Category",
-    y = "Total Sales ($)",
-  )  	
+    ),
+    legend.position = "none"
+  )
+  	
 ```
-![Sales by Product](Images/Sales_by_city_category(wrap).png)
+![Sales by Product](Images/Sales_city_category).png)
 
 Based on the sales data visualization across four major cities, here are the key insights:
 
