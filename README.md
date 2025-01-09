@@ -373,7 +373,7 @@ There's a significant drop in sales volume between the top performers and lower-
 **Recommendations**:
 A key recommendation would be to investigate what makes Carrot and Oatmeal Raisin products so successful - whether it's marketing, pricing, placement, or product quality - and apply those learnings to boost performance of lower-selling items. Additionally, given Banana's poor performance, resources might be better allocated to expanding successful product lines or developing new flavors based on the top performers' characteristics.
 
-**Sales by City by Category (wrap)**
+**2. Sales by City by Category (wrap)**
 ```r
 ggplot(data = my_sales_clean_data) +
   geom_col(
@@ -388,12 +388,11 @@ ggplot(data = my_sales_clean_data) +
   ) +
   scale_fill_brewer(palette = "Set2") +
   
-  # Improved y-axis formatting with specific breaks and labels
   scale_y_continuous(
-    labels = scales::label_dollar(scale = 1),  # Format as currency
-    breaks = seq(0, 8000, by = 2000),         # Breaks every 2000
-    limits = c(0, NA),                        # Start at 0
-    expand = expansion(mult = c(0, 0.1))      # Add small padding at top
+    labels = scales::label_dollar(scale = 1), 
+    breaks = seq(0, 8000, by = 2000),         
+    limits = c(0, NA),                        
+    expand = expansion(mult = c(0, 0.1))      
   ) +
   
   labs(
@@ -431,7 +430,7 @@ ggplot(data = my_sales_clean_data) +
   )
   	
 ```
-![Sales by Product](Images/Sales_city_category).png)
+![Sales by Product](Images/Sales_city_category_wrap.png)
 
 Based on the sales data visualization across four major cities, here are the key insights:
 
@@ -498,7 +497,7 @@ Looking at the sales breakdown by city and product category, here are the key in
 **Recommendations**:
 Focus on understanding why Boston's market performs so well and apply those learnings to boost performance in West Coast markets, particularly San Diego.
 
-**Sales by Order date**:
+**4. Sales by Order date**:
 ```r
 my_sales_clean_data %>%
   mutate(
@@ -568,7 +567,7 @@ my_sales_clean_data %>%
     y = "Total Sales($)"
   )
 ```
-![Sales by Product](Images/Sales_by _Orderdate.png)
+![Sales by Product](Images/Monthly_sales_comparison.png)
 
 Looking at the year-over-year monthly sales comparison between 2020 and 2021, here are the key insights:
 
@@ -593,7 +592,7 @@ Looking at the year-over-year monthly sales comparison between 2020 and 2021, he
 - The shift in peak sales months suggests a need for flexible resource allocation throughout the year
 - Understanding the success factors behind the strong Q4 2021 performance could help in planning future strategies
 
-**Month Sales By Product(2020)**
+**5. Month Sales By Product(2020)**
 ```r
 my_sales_clean_data %>%
    mutate(
@@ -665,7 +664,7 @@ my_sales_clean_data %>%
     y = "Total Sales ($)"
   )
 ```
-![Sales by Product](Images/Monthly_sales_ProductCat(2020).png)
+![Sales by Product](Images/Monthly_sales_trend_cat_2020.png)
 
 Looking at the monthly sales trends across product categories in 2020, here are the key insights:
 
@@ -687,7 +686,7 @@ Looking at the monthly sales trends across product categories in 2020, here are 
 - The huge drop in Crackers after January suggests the need to investigate this category's performance difficulties.
 - Cookies seem to do especially well during the holiday season (December), indicating seasonal opportunities.
 
-**Month Sales By Category**
+**6. Month Sales By Category**
 ```r
 my_sales_clean_data %>%
   mutate(
