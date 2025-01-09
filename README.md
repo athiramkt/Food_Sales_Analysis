@@ -15,7 +15,7 @@ This repository presents a detailed case study on a food sales company. Using da
 
 A food sales company wants to analyze its sales data from 2020 and 2021 to gain insights into the performance of various products, categories, and cities, including items like cookies, bars, crackers, and snacks. Using this information, the company aims to identify key trends and develop high-level recommendations to optimize product offerings and enhance sales and marketing strategies.
 
-## ASK
+## Phase 1: ASK
 
 Business Tasks
 Key business questions to guide the analysis:
@@ -24,7 +24,7 @@ Key business questions to guide the analysis:
 > 3. What are the sales trends over time in 2020 and 2021?
 > 4. Are there any seasonal patterns in sales?.
 
-## PREPARE
+## Phase 2: PREPARE
 
 This phase focuses on setting up the environment and exploring the dataset to ensure a thorough analysis.
 
@@ -37,7 +37,7 @@ The food sales dataset undergoes a quality assessment to provide a clear snapsho
 > 4. Currency: The dataset focuses on sales data from 2020-2021.
 > 5. Limitations: As the dataset is simulated and covers a limited timeframe, its primary purpose is to serve as a learning tool rather than a definitive source for business decision-making.
 
-**Install and load packages to setup the environment**
+**Install and load packages to setup the environment**: 
 The data is imported from an excel document into a dataframe called foodsales.
 
 **Data Import and Setup**
@@ -73,7 +73,7 @@ The following objects are masked from ‘package:stats’:
 
     chisq.test, fisher.test
 ```
-## PROCESS
+## Phase 3: PROCESS
 We need to verify the column names first to ensure consistency, as all column names must match exactly.
 ```r
 head(foodsales) #Views the first 6 rows
@@ -167,8 +167,7 @@ $ quantity    <dbl> 33, 87, 58, 82, 38, 54, 149, 51, 100, 28, 36, 31, …
 $ unit_price  <dbl> 1.77, 3.49, 1.87, 1.87, 2.18, 1.77, 3.49, 1.77, 1.…
 $ total_price <dbl> 58.41, 303.63, 108.46, 153.34, 82.84, 95.58, 520.0…
 ```
-## Analyze
-
+## Phase 4: Analyze
 After completing cleaning and formatting, we can now explore the data from a broader perspective. By generating high-level summary statistics, we aim to conduct a descriptive analysis to identify sales data patterns and trends by category, product, and date.
 
 **View Sales By Category (Here we do some analysis to check which categories had the most sales)**
@@ -188,8 +187,8 @@ arrange(desc(total_sales_by_category))
 3 Crackers                   3340.
 4 Snacks                     2238.
 ```
-**Finding**: 
-> 1.The analysis of total sales by category reveals that cookies are the highest-performing product category, contributing significantly to overall sales with 17,212 units sold. 
+**Finding**: **Analysis of Sales By Category**
+> 1. The analysis of total sales by category reveals that cookies are the highest-performing product category, contributing significantly to overall sales with 17,212 units sold.
 > 2. Bars follow with 10,536 units, while crackers and snacks show relatively lower sales figures of 3,340 and 2,238 units, respectively. 
 This indicates a strong customer preference for cookies and bars compared to other product categories.
 
@@ -215,7 +214,7 @@ arrange(desc(total_sales_by_product))
 8 Pretzels                         586.
 9 Banana                           179.
 ```
-**Finding**:
+**Finding**: **Analysis of Sales By Product**
 > 1. The analysis of total sales by product shows that Carrot and Oatmeal Raisin are the top-performing products, with 7,411 and 7,310 units sold, respectively. 
 > 2. Arrowroot and Chocolate Chip follow with 5,330 and 4,572 units. In contrast, Banana and Pretzels have the lowest sales, with just 179 and 586 units sold, respectively. 
 
@@ -248,9 +247,7 @@ my_sales_clean_data %>%
 # ℹ 14 more rows
 # ℹ Use `print(n = ...)` to see more rows
 ```
-**Finding**:
-**Analysis of Monthly Sales by Year (2021)**:
-
+**Finding**: **Analysis of Monthly Sales by Year (2021)**
 > 1. Peak Sales Month:
         December 2021 recorded the highest sales with 1,515 units, indicating strong performance, likely influenced by holiday shopping trends.
 
@@ -294,8 +291,7 @@ my_sales_clean_data %>%
 11 Apr                      1052.
 12 Feb                       926.
 ```
-**Finding**:
-**Analysis of Total Sales by Month**:
+**Finding**:**Analysis of Total Sales by Month**
 
 > 1. Top-Performing Month:
         June recorded the highest sales at 2,309 units, indicating strong consumer demand during this period.
@@ -329,14 +325,18 @@ my_sales_clean_data %>%
 3 Crackers                   3340.
 4 Snacks                     2238.
 ```
-**Analysis of Total Sales by Category**:
-Cookies dominate sales with 17,212 units, accounting for the largest share, followed by Bars at 10,536 units. Crackers and Snacks contribute significantly less, with 3,340 units and 2,238 units, respectively. This highlights strong customer preference for Cookies and Bars, suggesting they should be prioritized in marketing and inventory strategies.
+**Finding**: **Analysis of Total Sales by Category**:
+> 1. Cookies dominate sales with 17,212 units, accounting for the largest share, followed by Bars at 10,536 units. 
 
-## Share
+> 2. Crackers and Snacks contribute significantly less, with 3,340 units and 2,238 units, respectively. 
+
+This highlights strong customer preference for Cookies and Bars, suggesting they should be prioritized in marketing and inventory strategies.
+
+## Phase 5: Share
 
 We'll begin by analyzing the data through visualizations to uncover key insights and present our findings in a clear and impactful manner to the marketing team and other stakeholders.
 
-**Sales by Product**
+**1.Sales by Product**
 ```r
 ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = product)) +
   geom_col() +
@@ -345,11 +345,11 @@ ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = prod
     axis.text.x = element_text(angle = 30, hjust = 1, color = "darkblue", size = 10),
     axis.text.y = element_text(color = "darkblue", size = 10),
     plot.title = element_text(face = "bold", size = 14, hjust = 0.5, color = "darkred"),
-    plot.caption = element_text(size = 8, hjust = 0, color = "gray50"),
-    legend.position = "top",                     # Move legend to the top
-    legend.text = element_text(size = 6),       # Increase legend text size
-    legend.title = element_text(face = "bold"),
-    legend.key.width = unit(1.2, "cm")           # Adjust spacing between legend items
+    plot.caption = element_text(size = 10, hjust = 0, color = "gray50"),
+    legend.position = "top",                     
+    legend.text = element_text(size = 4),       
+    legend.title = element_text(face = "bold", size = 4),
+    legend.key.width = unit(1.2, "cm")          
   ) +
   labs(
     title = "Product-Wise Sales Analysis",
@@ -360,7 +360,7 @@ ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = prod
   guides(fill = guide_legend(title = "Product"))
 
 ```
-![Sales by Product](Images/Sales_by_product.png)
+![Sales by Product](Images/Product_wise_sales_analysis.png)
 
 Looking at the product-level sales data, here are the key insights:
 
@@ -859,7 +859,7 @@ The difference between the top-performing item (cookies) and the lowest-performi
 4. Evaluate the market potential for increasing Bars and Snacks offerings, given their existing low presence.
 5. Analyse price tactics for each category to maximise the revenue mix.
 
-## Act
+## Phase 6: Act
 In the final step of the data analysis process, we will provide recommendations to boost customer engagement and drive sales for the food company.
 
 1. **Product Strategy**
