@@ -339,28 +339,22 @@ We'll begin by analyzing the data through visualizations to uncover key insights
 **1.Sales by Product**
 ```r
 ggplot(data = my_sales_clean_data, aes(x = product, y = total_price, fill = product)) +
-  geom_col() +
-  theme_minimal() +
+  geom_col(width = 0.8) + 
+  theme_minimal() +  
   theme(
-    axis.text.x = element_text(angle = 30, hjust = 1, color = "darkblue", size = 10),
-    axis.text.y = element_text(color = "darkblue", size = 10),
-    plot.title = element_text(face = "bold", size = 14, hjust = 0.5, color = "darkred"),
-    plot.caption = element_text(size = 10, hjust = 0, color = "gray50"),
-    legend.position = "top",                     
-    legend.text = element_text(size = 4),       
-    legend.title = element_text(face = "bold", size = 4),
-    legend.key.width = unit(1.2, "cm")          
+    axis.text.x = element_text(angle = 45, hjust = 1, colour = "blue", size = 10),  
+    plot.title = element_text(face = "bold", size = 14),  
+    plot.caption = element_text(size = 8, color = "dim gray")
   ) +
   labs(
-    title = "Product-Wise Sales Analysis",
+    title = "Product-wise Sales Analysis",
     caption = "Source: Visualization based on sample data for testing purposes",
-    x = "Product Name",
+    x = "Product",
     y = "Total Sales ($)"
-  ) +
-  guides(fill = guide_legend(title = "Product"))
+  )
 
 ```
-![Sales by Product](Images/Product_wise_sales_analysis.png)
+![Text](Images/Product_sales_analysis.png)
 
 Looking at the product-level sales data, here are the key insights:
 
@@ -376,61 +370,22 @@ A key recommendation would be to investigate what makes Carrot and Oatmeal Raisi
 **2. Sales by City by Category (wrap)**
 ```r
 ggplot(data = my_sales_clean_data) +
-  geom_col(
-    mapping = aes(x = category, y = total_price, fill = category),
-    width = 0.7,
-    alpha = 0.9
+  geom_col(aes(x = category, y = total_price, fill = category), width = 0.8) + 
+  facet_wrap(~city, scales = "free_y") +  
+  theme_minimal() +  
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),  
+    plot.title = element_text(face = "bold", size = 14), 
+    plot.caption = element_text(size = 8, color = "dim gray")  
   ) +
-  facet_wrap(
-    ~city, 
-    ncol = 2,
-    scales = "free_y"
-  ) +
-  scale_fill_brewer(palette = "Set2") +
-  
-  scale_y_continuous(
-    labels = scales::label_dollar(scale = 1), 
-    breaks = seq(0, 8000, by = 2000),         
-    limits = c(0, NA),                        
-    expand = expansion(mult = c(0, 0.1))      
-  ) +
-  
   labs(
-    title = "Sales by City by Category",
+    title = "Product Category Sales Distribution Across Cities",
     caption = "Source: Visualization based on sample data for testing purposes",
     x = "Category",
     y = "Total Sales ($)"
-  ) +
-  
-  theme_minimal() +
-  theme(
-    plot.title = element_text(
-      size = 16,
-      face = "bold",
-      margin = margin(t = 10, b = 20)
-    ),
-    axis.text.x = element_text(
-      angle = 45,
-      hjust = 1,
-      vjust = 1
-    ),
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    panel.spacing = unit(2, "lines"),
-    strip.text = element_text(
-      size = 12,
-      face = "bold"
-    ),
-    plot.caption = element_text(
-      hjust = 0,
-      size = 9,
-      margin = margin(t = 15)
-    ),
-    legend.position = "none"
   )
-  	
 ```
-![Sales by Product](Images/Sales_city_category_wrap.png)
+![Text](Images/Sales_City_Category _wrap.png)
 
 Based on the sales data visualization across four major cities, here are the key insights:
 
@@ -449,31 +404,7 @@ A potential opportunity would be to investigate why the West Coast cities (Los A
 
 **Sales by City by Category(grid)**
 ```r
-library(scales)
-ggplot(data = my_sales_clean_data) +
-  
-  geom_col(mapping = aes(x = category, y = total_price, fill = product)) +
-  facet_grid(~city) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    plot.title = element_text(size = 14, face = "bold", margin = margin(b = 10)),
-    plot.subtitle = element_text(size = 12, margin = margin(b = 10)),
-    panel.spacing = unit(1, "lines"),
-    legend.position = "right"
-  ) +
-  scale_y_continuous(labels = scales::comma) +
- 
-  labs(
-    title = "Sales By City By Category(grid)",
-    subtitle = "Products by Category",
-    caption = "Source: Visualization based on sample data for testing purposes",
-    x = "Product Category",
-    y = "Total Sales ($)",
-    fill = "Product"  
-  )
+
 ```
 ![Sales by Product](Images/Sales_by_City_Category(grid).png)
 
@@ -499,73 +430,7 @@ Focus on understanding why Boston's market performs so well and apply those lear
 
 **4. Sales by Order date**:
 ```r
-my_sales_clean_data %>%
-  mutate(
-    month_name = month(order_date, label = TRUE),
-    saleyear = year(order_date)
-  ) %>%
-  group_by(saleyear, month_name) %>%
-  summarise(
-    total_sales_by_date = sum(total_price),
-    .groups = 'drop'
-  ) %>%
-  
-  ggplot(aes(
-    x = month_name,
-    y = total_sales_by_date,
-    color = factor(saleyear),
-    group = factor(saleyear)
-  )) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2.5) +
-  
-  scale_color_manual(
-    values = c("2020" = "#FF6B6B", "2021" = "#4ECDC4"),
-    name = "Year"
-  ) +
-  scale_y_continuous(
-    labels = scales::dollar_format(),
-    breaks = seq(800, 2400, by = 400),
-    expand = expansion(mult = c(0.02, 0.1))
-  ) +
-  
-  theme_minimal() +
-  theme(
 
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    
-    plot.title = element_text(
-      size = 14,
-      face = "bold",
-      margin = margin(b = 10)
-    ),
-    plot.subtitle = element_text(
-      size = 12,
-      margin = margin(b = 20)
-    ),
-    axis.title = element_text(size = 11),
-    axis.text = element_text(size = 10),
-    axis.text.x = element_text(
-      angle = 45,
-      hjust = 1,
-      color = "black"
-    ),
-    legend.position = "top",
-    legend.title = element_text(face = "bold"),
-    plot.caption = element_text(
-      hjust = 0,
-      size = 9,
-      margin = margin(t = 20)
-    )
-  ) +
-  labs(
-    title = "Monthly Sales Comparison (2020 vs 2021)",
-    subtitle = "Year-over-Year Monthly Sales Performance",
-    caption = "Source: Visualization based on sample data for testing purposes",
-    x = "Month",
-    y = "Total Sales($)"
-  )
 ```
 ![Sales by Product](Images/Monthly_sales_comparison.png)
 
@@ -594,75 +459,7 @@ Looking at the year-over-year monthly sales comparison between 2020 and 2021, he
 
 **5. Month Sales By Product(2020)**
 ```r
-my_sales_clean_data %>%
-   mutate(
-    month_name = month(order_date, label = TRUE),
-    saleyear = year(order_date)
-  ) %>%
-  filter(saleyear == 2020) %>%
-  group_by(month_name, category) %>%
-  summarise(
-    total_sales_by_date = sum(total_price),
-    .groups = 'drop'
-  ) %>%
-  ggplot(aes(
-    x = month_name,
-    y = total_sales_by_date,
-    color = category,
-    group = category
-  )) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 3, alpha = 0.7) +
-  scale_color_brewer(
-    palette = "Set2",
-    name = "Product Category"
-  ) +
-  scale_y_continuous(
-    labels = scales::dollar_format(),
-    breaks = scales::pretty_breaks(n = 6),
-    expand = expansion(mult = c(0.02, 0.1))
-  ) +
-  theme_minimal() +
-  theme(
-   
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
- 
-    plot.title = element_text(
-      size = 14,
-      face = "bold",
-      margin = margin(b = 10)
-    ),
-    plot.subtitle = element_text(
-      size = 10,
-      color = "grey30",
-      margin = margin(b = 20)
-    ),
-    axis.title = element_text(size = 11),
-    axis.text = element_text(size = 10),
-    axis.text.x = element_text(
-      angle = 45,
-      hjust = 1,
-      color = "black"
-    ),
-    legend.position = "right",
-    legend.title = element_text(face = "bold"),
-    legend.background = element_rect(fill = "white", color = NA),
-    plot.margin = margin(t = 20, r = 20, b = 20, l = 20),
-    plot.caption = element_text(
-      hjust = 0,
-      size = 9,
-      margin = margin(t = 20)
-    )
-  ) +
 
-  labs(
-    title = "Monthly Sales by Product Category (2020)",
-    subtitle = "Tracking sales performance across different product categories",
-    caption = "Source: Visualization based on sample data for testing purposes",
-    x = "Month",
-    y = "Total Sales ($)"
-  )
 ```
 ![Sales by Product](Images/Monthly_sales_trend_cat_2020.png)
 
@@ -688,80 +485,7 @@ Looking at the monthly sales trends across product categories in 2020, here are 
 
 **6. Month Sales By Category**
 ```r
-my_sales_clean_data %>%
-  mutate(
-    month_name = month(order_date, label = TRUE),
-    saleyear = year(order_date),
-    total_price = round(total_price, 2)  
-  ) %>%
-  filter(saleyear == 2020) %>%
-  group_by(month_name, category) %>%
-  summarise(
-    total_sales_by_date = sum(total_price),
-    .groups = 'drop'  
-  ) %>%
-  ggplot(aes(
-    x = month_name,
-    y = total_sales_by_date,
-    color = category,
-    group = category
-  )) +
-  
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 3, shape = 21, fill = "white") +
-  geom_line(alpha = 0.7) +
- 
-  scale_color_brewer(
-    palette = "Set3",
-    name = "Product Category"
-  ) +
-  scale_y_continuous(
-    labels = scales::dollar_format(accuracy = 1),
-    breaks = seq(0, 1500, by = 300),  
-    expand = expansion(mult = c(0.02, 0.1))
-  ) +
 
-  theme_minimal() +
-  theme(
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = "gray90"),
-    plot.title = element_text(
-      size = 14,
-      face = "bold",
-      margin = margin(b = 10)
-    ),
-    plot.subtitle = element_text(
-      size = 10,
-      color = "gray30",
-      margin = margin(b = 10)
-    ),
-    axis.title = element_text(
-      size = 12,
-      face = "bold"
-    ),
-    axis.text = element_text(size = 11),
-    axis.text.x = element_text(
-      angle = 45,
-      hjust = 1,
-      color = "black"
-    ),
-    
-    legend.position = "right",
-    legend.title = element_text(face = "bold"),
-    legend.text = element_text(size = 10),
-    legend.margin = margin(l = 10),
-    
-    plot.margin = margin(t = 20, r = 20, b = 20, l = 20)
-  ) +
-  
-  labs(
-    title = "Monthly Sales Trends by Category (2020)",
-    subtitle = "Tracking monthly revenue performance across product categories",
-    caption = "Source: Visualization based on sample data for testing purposes",
-    x = "Month",
-    y = "Total Sales ($)"
-  )
 ```
 ![Sales by Product](Images/Monthly_sales_trend_cat(2020).png)
 
@@ -787,50 +511,7 @@ Looking at the monthly sales trends by product category for 2020, here are the k
 
 **Month Sales By Category (Create monthly sales pie chart by category for 2020)**
 ```r
-my_sales_clean_data %>%
-  
-  filter(year(order_date) == 2020) %>%
 
-  group_by(category) %>%
-  summarise(
-    total_sales = sum(total_price),
-    .groups = 'drop'  
-  ) %>%
- 
-  mutate(
-    sales_percent = total_sales / sum(total_sales),
-    label = scales::percent(sales_percent, accuracy = 0.1)
-  ) %>%
- 
-  ggplot(aes(x = "", y = sales_percent, fill = category)) +
-  geom_col(
-    color = "white",    
-    width = 1,         
-    linewidth = 0.5     
-  ) +
-  geom_label(
-    aes(label = label),
-    position = position_stack(vjust = 0.5),
-    color = "white",
-    fill = "gray30",   
-    label.size = 0.25,  
-    show.legend = FALSE
-  ) +
-  coord_polar(theta = "y") +
-  
-  scale_fill_brewer(palette = "Set3") + 
-  theme_minimal() +
-  theme(
-    axis.text = element_blank(),
-    axis.title = element_blank(),
-    panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
-    legend.title = element_blank()
-  ) +
-  labs(
-    title = "Sales Distribution by Category (2020)",
-    caption = "Source: Visualization based on sample data for testing purposes"
-  )
 ```
 ![Sales by Product](Images/Sales_distribution_category.png)
 
