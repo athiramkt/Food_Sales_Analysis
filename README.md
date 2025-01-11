@@ -365,7 +365,8 @@ There's a significant drop in sales volume between the top performers and lower-
 > 4. Banana has the lowest sales volume of all products, suggesting it might be worth reconsidering its place in the product lineup.
 
 **Recommendations**:
-A key recommendation would be to investigate what makes Carrot and Oatmeal Raisin products so successful - whether it's marketing, pricing, placement, or product quality - and apply those learnings to boost performance of lower-selling items. Additionally, given Banana's poor performance, resources might be better allocated to expanding successful product lines or developing new flavors based on the top performers' characteristics.
+> 1. A key recommendation would be to investigate what makes Carrot and Oatmeal Raisin products so successful - whether it's marketing, pricing, placement, or product quality - and apply those learnings to boost performance of lower-selling items. 
+> 2. Additionally, given Banana's poor performance, resources might be better allocated to expanding successful product lines or developing new flavors based on the top performers' characteristics.
 
 **2. Sales by City by Category (wrap)**
 ```r
@@ -385,7 +386,7 @@ ggplot(data = my_sales_clean_data) +
     y = "Total Sales ($)"
   )
 ```
-![Text](Images/Sales_City_Category _wrap.png)
+![Text](Images/Sales_City_Category_wrap.png)
 
 Based on the sales data visualization across four major cities, here are the key insights:
 
@@ -402,106 +403,147 @@ Based on the sales data visualization across four major cities, here are the key
 **Recommendations**
 A potential opportunity would be to investigate why the West Coast cities (Los Angeles and San Diego) have significantly lower cracker sales compared to Boston, and whether there are regional preferences that could inform product strategy.
 
-**Sales by City by Category(grid)**
+**3. Sales by Order date**:
 ```r
+my_sales_clean_data %>%
+  mutate(month_name = month(order_date, label = TRUE), saleyear = year(order_date)) %>%
+  group_by(saleyear, month_name) %>%
+  summarise(total_sales_by_date = sum(total_price)) %>%
+  ggplot(aes(x = month_name, y = total_sales_by_date, color = factor(saleyear), group = factor(saleyear))) +
+  geom_line(size = 1.2) +  # Adjust line thickness
+  scale_color_manual(values = c("blue", "green", "red", "purple", "orange")) +  # Custom color palette
+  theme_minimal() +  # Use minimal theme for a cleaner look
+  theme(
+    axis.text.x = element_text(angle = 45,size = 12, hjust = 1),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 11),
+    plot.title = element_text(size = 14, face = "bold"),
+    plot.caption = element_text(size = 8,color = "dim gray")
+  ) +
+  labs(
+    title = "Monthly Sales (Year-over-Year)",
+    caption = "Source: Visualization based on sample data for testing purposes",
+    x = "Month",
+    y = "Total Sales ($)"
+  )+
+  guides(color = guide_legend(title = "Year"))
 
 ```
-![Sales by Product](Images/Sales_by_City_Category(grid).png)
-
-Looking at the sales breakdown by city and product category, here are the key insights:
-
-> 1. Product Mix Analysis:
-- Cookies are dominated by Chocolate Chip and Oatmeal Raisin across all cities
-- Bars category shows a consistent mix of Carrot, Bran, and Arrowroot
-- Crackers and Snacks categories have much lower sales overall and simpler product mix
-
-> 2. Regional Patterns:
-- Boston shows the strongest performance overall, especially in Cookies
-- New York and Los Angeles have similar patterns but at lower volumes than Boston
-- San Diego consistently shows the lowest sales across all categories
-
-> 3. Notable Opportunities:
-- The success of Chocolate Chip and Oatmeal Raisin cookies in Boston could be studied and replicated in other cities
-- The significant drop between East Coast (Boston/NY) and West Coast (LA/San Diego) performance suggests potential for market development
-- Banana products show consistently low performance across all categories and cities, suggesting a need for product review
-
-**Recommendations**:
-Focus on understanding why Boston's market performs so well and apply those learnings to boost performance in West Coast markets, particularly San Diego.
-
-**4. Sales by Order date**:
-```r
-
-```
-![Sales by Product](Images/Monthly_sales_comparison.png)
+![Text](Images/Monthly_sales_YOY.png)
 
 Looking at the year-over-year monthly sales comparison between 2020 and 2021, here are the key insights:
 
-> 1. Seasonal Patterns:
-- Both years show significant monthly fluctuations
-- Peak sales occurred in June 2020 ($2,400) and November 2021 ($2,000)
-- Both years tend to have lower sales in July-August period
+>  Seasonal Patterns:
+> 1. Both years show significant monthly fluctuations
+> 2. Peak sales occurred in June 2020 ($2,400) and November 2021 ($2,000)
+> 3. Both years tend to have lower sales in July-August period
 
-> 2. Year-over-Year Changes:
-- Sales patterns shifted significantly between 2020 and 2021
-- 2020 had a notable spike in June that wasn't repeated in 2021
-- 2021 showed stronger performance in Q4 (October-December) compared to 2020
-- Early months (January-March) were relatively stable across both years
+> Year-over-Year Changes:
+> 1. Sales patterns shifted significantly between 2020 and 2021
+> 2. 2020 had a notable spike in June that wasn't repeated in 2021
+> 3. 2021 showed stronger performance in Q4 (October-December) compared to 2020
+> 4. Early months (January-March) were relatively stable across both years
 
-> 3. Notable Trends:
-- 2020 showed more volatile sales patterns with sharp peaks and troughs
-- 2021 demonstrated more consistent sales levels, especially in the second half
-- The lowest sales point shifted from February 2020 to September 2021
+>  Notable Trends:
+> 1. 2020 showed more volatile sales patterns with sharp peaks and troughs
+> 2. 2021 demonstrated more consistent sales levels, especially in the second half
+> 3. The lowest sales point shifted from February 2020 to September 2021
 
 **Recommendation**:
-- The more stable pattern in 2021 might indicate improved inventory management or more consistent marketing efforts
-- The shift in peak sales months suggests a need for flexible resource allocation throughout the year
+- The more constant trend in 2021 could be a sign of better inventory control or more persistent marketing initiatives.
+- The change in the months with the highest sales indicates that resources must be allocated flexibly all year long
 - Understanding the success factors behind the strong Q4 2021 performance could help in planning future strategies
 
-**5. Month Sales By Product(2020)**
+**4. Month Sales By Product(2020)**
 ```r
+my_sales_clean_data %>%
+  mutate(month_name = month(order_date, label = TRUE), saleyear = year(order_date)) %>%
+  filter(saleyear == 2020) %>%
+  group_by(saleyear, month_name, product) %>%
+  summarise(total_sales_by_date = sum(total_price)) %>%
+  ggplot(aes(x = month_name, y = total_sales_by_date, color = product, group = product)) +
+  geom_line(linewidth = 1.2) +  # Adjust line thickness
+  scale_color_manual(values = c("blue", "green", "red", "purple", "orange", "pink", "brown", "gray", "yellow" )) +  
+  theme_minimal() +  # Clean minimal theme
+  theme(
+    axis.text.x = element_text(angle = 45, size = 12, hjust = 1),  # Customize x-axis labels
+    axis.text.y = element_text(size = 12),  # Customize y-axis labels
+    axis.title = element_text(size = 14, face = "bold"),  # Bold axis titles
+    legend.title = element_text(size = 12, face = "bold"),  # Bold legend title
+    legend.text = element_text(size = 11),  # Adjust legend text size
+    plot.title = element_text(size = 14, face = "bold"),  # Title styling
+    plot.caption = element_text(size = 8, color = "dim gray")  # Caption styling
+  ) +
+  labs(
+    title = "Monthly Sale Trend by Product Category",
+    caption = "Source: Visualization based on sample data for testing purposes",
+    x = "Month",
+    y = "Total Sales ($)"
+  ) +
+  guides(color = guide_legend(title = "Product"))
 
 ```
-![Sales by Product](Images/Monthly_sales_trend_cat_2020.png)
+![Text](Images/Monthly_saletrend_product.png)
 
 Looking at the monthly sales trends across product categories in 2020, here are the key insights:
 
-> 1. Category Rankings and Patterns:
-> - Cookies (coral line) is the top performer, showing peaks of around $1,200 in December and consistent leadership throughout the year
-> - Bars (mint green line) maintains second position with more moderate sales around $400-700
-> - Crackers (blue line) shows an interesting spike in January but generally lower performance afterward
-> - Snacks (pink line) consistently shows the lowest sales, rarely exceeding $200 monthly
+> High Variability in Sales:
+> 1. Certain product categories like "Arrowroot" and "Whole Wheat" show significant spikes in sales during specific months.
+> - Products such as "Oatmeal Raisin" and "Potato Chips" maintain relatively steady, lower sales levels throughout the year.
 
-> 2. Notable Trends:
-> - A a synchronised peak across categories in June, with Cookies and Bars showing a robust performance
-> - There is a general slowdown in all categories over the July–August season
-> - Cookies exhibit considerable volatility, with notable rises in March, June, and December.
-> - Cookies had a strong year-end result, but other categories saw a dip.
+>  Seasonal Trends:
+> 1. There appears to be a sales peak for "Arrowroot" and "Carrot" in the later months (e.g., November and December), which could be attributed to seasonal demand or promotions.
+> 2. Some products like "Chocolate Chip" and "Banana" experience fluctuations without a clear seasonal trend.
 
 **Recommendations**:
-- Given Cookies' steady success, there may be room to grow this product line.
-- Targeted marketing or promotional tactics may be necessary during the summer slowdown.
-- The huge drop in Crackers after January suggests the need to investigate this category's performance difficulties.
-- Cookies seem to do especially well during the holiday season (December), indicating seasonal opportunities.
+- Focus on maximizing sales for high-performing products like "Arrowroot" and "Whole Wheat" during peak months with targeted promotions and sufficient stock. 
+- Investigate seasonal spikes to replicate successful strategies across other products. 
+- Revitalize low-performing items like "Pretzels" and "Potato Chips" through rebranding, bundling, or customer research. Optimize inventory and marketing efforts based on sales trends, and use digital campaigns to enhance product visibility and engagement.
 
-**6. Month Sales By Category**
+**5. Month Sales By Category(multiple lines) (2020)**
 ```r
-
+my_sales_clean_data %>%
+  mutate(month_name = month(order_date, label = TRUE), saleyear = year(order_date)) %>%
+  filter(saleyear == 2020) %>%
+  group_by(month_name, category) %>%
+  summarise(total_sales = sum(total_price), .groups = "drop") %>%
+  ggplot(aes(x = month_name, y = total_sales, color = category, group = category)) +
+  geom_line(linewidth = 1.2) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # Customize x-axis labels
+    axis.text.y = element_text(size = 12),  # Customize y-axis labels
+    axis.title = element_text(size = 14, face = "bold"),  # Bold axis titles
+    legend.title = element_text(size = 12, face = "bold"),  # Bold legend title
+    legend.text = element_text(size = 11),  # Adjust legend text size
+    plot.title = element_text(size = 14, face = "bold"),  # Title styling
+    plot.caption = element_text(size = 8, color = "dim gray")  # Caption styling
+  ) +
+  labs(
+    title = "Monthly Sales by Category (2020)",
+    caption = "Source: Visualization based on sample data for testing purposes",
+    x = "Month",
+    y = "Total Sales ($)",
+    color = "Category"
+  )
 ```
-![Sales by Product](Images/Monthly_sales_trend_cat(2020).png)
+![Sales by Product](Images/Monthly_sales_cat_20.png)
 
 Looking at the monthly sales trends by product category for 2020, here are the key insights:
 
-> 1.Category Performance:
-- Cookies routinely generates revenue, peaking at over $1,000 in March and December
-- Bars shows steady performance as the second-best category, typically ranging between $400-$600
-- Crackers had a great start in January (around $800), but saw a big fall after that
-- Snacks have the lowest but most consistent sales, circling around $200
+> Category Performance:
+> 1.Cookies routinely generates revenue, peaking at over $1,000 in March and December
+> 2. Bars shows steady performance as the second-best category, typically ranging between $400-$600
+> 3. Crackers had a great start in January (around $800), but saw a big fall after that
+> 4. Snacks have the lowest but most consistent sales, circling around $200
 
-> 2.Seasonal Patterns:
-- June sees a noticeable mid-year peak for the majority of categories.
-- Summertime (July–August) sales are lower in every category.
-- December's strong year-end results, especially for Cookies
-- Performance in all categories is moderate throughout the spring (March–April).
+> Seasonal Patterns:
+> 1. June sees a noticeable mid-year peak for the majority of categories.
+> 2. Summertime (July–August) sales are lower in every category.
+> 3. December's strong year-end results, especially for Cookies
+> 4. Performance in all categories is moderate throughout the spring (March–April).
 
 **Recommendations**:
 1. Analyse the elements that contributed to Cookies' strong performance in order to see if they may be applied to other categories.
@@ -511,6 +553,30 @@ Looking at the monthly sales trends by product category for 2020, here are the k
 
 **Month Sales By Category (Create monthly sales pie chart by category for 2020)**
 ```r
+my_sales_clean_data %>%
+  filter(year(order_date) == 2020) %>%
+  group_by(category) %>%
+  summarise(total_sales_by_cat = sum(total_price), .groups = "drop") %>%
+  mutate(
+    total_sales_by_cat_perc = total_sales_by_cat / sum(total_sales_by_cat),
+    labels = percent(total_sales_by_cat_perc, accuracy = 1L)
+  ) %>%
+  ggplot(aes(x = "", y = total_sales_by_cat_perc, fill = category)) +
+  geom_col(color = "white") +  
+  geom_label(aes(label = labels), 
+             color = "white", 
+             position = position_stack(vjust = 0.5), 
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Set2") +  
+  theme_void() +
+  labs(title = "Category-wise Sales Distribution (2020)", 
+  caption = "Source: Visualization based on sample data for testing purposes",
+  fill = "Category") +
+  theme(
+    plot.title = element_text(face = "bold"), 
+    legend.title = element_text(size = 12, face = "bold")
+  )
 
 ```
 ![Sales by Product](Images/Sales_distribution_category.png)
@@ -518,7 +584,7 @@ Looking at the monthly sales trends by product category for 2020, here are the k
 Looking at the sales distribution by product category for 2020, here are the key insights:
 
 > 1. Category Performance:
-- The product mix is dominated by cookies, which account for 46.7% of total sales.
+- The product mix is dominated by cookies, which account for 47.0% of total sales.
 - At 32.0%, crackers are a powerful secondary category.
 - Bars make up 13.9% of sales, which is a moderate contribution.
 - At 7.5%, snacks have the smallest share.
