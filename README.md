@@ -575,7 +575,8 @@ my_sales_clean_data %>%
   fill = "Category") +
   theme(
     plot.title = element_text(face = "bold"), 
-    legend.title = element_text(size = 12, face = "bold")
+    legend.title = element_text(size = 12, face = "bold"),
+    plot.caption = element_text(size = 8, color = "dim gray")
   )
 
 ```
