@@ -410,8 +410,8 @@ my_sales_clean_data %>%
   group_by(saleyear, month_name) %>%
   summarise(total_sales_by_date = sum(total_price)) %>%
   ggplot(aes(x = month_name, y = total_sales_by_date, color = factor(saleyear), group = factor(saleyear))) +
-  geom_line(size = 1.2) +  # Adjust line thickness
-  scale_color_manual(values = c("blue", "green", "red", "purple", "orange")) +  # Custom color palette
+  geom_line(size = 1.2) + 
+  scale_color_manual(values = c("blue", "green", "red", "purple", "orange")) +  
   theme_minimal() +  # Use minimal theme for a cleaner look
   theme(
     axis.text.x = element_text(angle = 45,size = 12, hjust = 1),
@@ -464,17 +464,17 @@ my_sales_clean_data %>%
   group_by(saleyear, month_name, product) %>%
   summarise(total_sales_by_date = sum(total_price)) %>%
   ggplot(aes(x = month_name, y = total_sales_by_date, color = product, group = product)) +
-  geom_line(linewidth = 1.2) +  # Adjust line thickness
+  geom_line(linewidth = 1.2) +  
   scale_color_manual(values = c("blue", "green", "red", "purple", "orange", "pink", "brown", "gray", "yellow" )) +  
-  theme_minimal() +  # Clean minimal theme
+  theme_minimal() +  
   theme(
-    axis.text.x = element_text(angle = 45, size = 12, hjust = 1),  # Customize x-axis labels
-    axis.text.y = element_text(size = 12),  # Customize y-axis labels
-    axis.title = element_text(size = 14, face = "bold"),  # Bold axis titles
-    legend.title = element_text(size = 12, face = "bold"),  # Bold legend title
-    legend.text = element_text(size = 11),  # Adjust legend text size
-    plot.title = element_text(size = 14, face = "bold"),  # Title styling
-    plot.caption = element_text(size = 8, color = "dim gray")  # Caption styling
+    axis.text.x = element_text(angle = 45, size = 12, hjust = 1),  
+    axis.text.y = element_text(size = 12), 
+    axis.title = element_text(size = 14, face = "bold"),  
+    legend.title = element_text(size = 12, face = "bold"),  
+    legend.text = element_text(size = 11),  
+    plot.title = element_text(size = 14, face = "bold"),  
+    plot.caption = element_text(size = 8, color = "dim gray")  
   ) +
   labs(
     title = "Monthly Sale Trend by Product Category",
@@ -513,13 +513,13 @@ my_sales_clean_data %>%
   geom_line(linewidth = 1.2) +
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # Customize x-axis labels
-    axis.text.y = element_text(size = 12),  # Customize y-axis labels
-    axis.title = element_text(size = 14, face = "bold"),  # Bold axis titles
-    legend.title = element_text(size = 12, face = "bold"),  # Bold legend title
-    legend.text = element_text(size = 11),  # Adjust legend text size
-    plot.title = element_text(size = 14, face = "bold"),  # Title styling
-    plot.caption = element_text(size = 8, color = "dim gray")  # Caption styling
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12), 
+    axis.text.y = element_text(size = 12), 
+    axis.title = element_text(size = 14, face = "bold"),  
+    legend.title = element_text(size = 12, face = "bold"), 
+    legend.text = element_text(size = 11), 
+    plot.title = element_text(size = 14, face = "bold"), 
+    plot.caption = element_text(size = 8, color = "dim gray")  
   ) +
   labs(
     title = "Monthly Sales by Category (2020)",
@@ -583,34 +583,37 @@ my_sales_clean_data %>%
 
 Looking at the sales distribution by product category for 2020, here are the key insights:
 
-> 1. Category Performance:
-- The product mix is dominated by cookies, which account for 47.0% of total sales.
-- At 32.0%, crackers are a powerful secondary category.
-- Bars make up 13.9% of sales, which is a moderate contribution.
-- At 7.5%, snacks have the smallest share.
+>   Category Performance:
+> 1. Cookies are the main product, making up 47.0% of all sales.  
+> 2. Bars come in second with a good share of 32.0%.  
+> 3. Crackers have a moderate share at 14.0% of sales.  
+> 4. Snacks hold the smallest portion at 7.0% of total sales.
 
-> 2. Category Balance:
-- Baked goods (Cookies and Crackers combined) account for 78.7% of sales
-- Only 21.4% of categories are non-baked (bars and snacks).
-
+>  Category Balance:
+> 1. Together, Cookies and Bars, which do best, make up 79.0% of total sales.  
+> 2. Sales from Crackers and Snacks are only 21.0%, showing a chance for growth in these areas.
 The difference between the top-performing item (cookies) and the lowest-performing one (snacks) is substantial.
 
-**Recommendations**:
-1. Investigate success factors that contributed to Cookies' market dominance in order to perhaps replicate them in other categories.
-2. To improve the underperforming Bars and Snacks divisions, contemplate product development or marketing campaigns.
-3. Determine whether the excessive reliance on cookies is risky and create plans to diversify sources of income.
-4. Evaluate the market potential for increasing Bars and Snacks offerings, given their existing low presence.
-5. Analyse price tactics for each category to maximise the revenue mix.
+**Recommendations:**  
+1. Investigate success factors behind Cookies' dominance to replicate in other categories  
+2. Boost Bars and Snacks with targeted product development and marketing  
+3. Assess reliance on Cookies and diversify revenue streams  
+4. Explore growth opportunities for Bars and Snacks through market research  
+5. Optimize pricing strategies to maximize revenue across categories
 
 ## Phase 6: Act
+
+In the final step of our data analysis, here are actionable recommendations to boost customer engagement and drive sales for the food company.
+
+**Product Strategy**
 In the final step of the data analysis process, we will provide recommendations to boost customer engagement and drive sales for the food company.
 
 1. **Product Strategy**
-   * Leverage Cookies' 46.7% market share by:
-     - Examining popular cookie variations for shared characteristics
-     - Increasing the range of flavours and container sizes
-     - Investigating cross-category applications of successful cookie formulations
-   * Address the 7.5% underperformance of snacks by:
+   * Make the most of our strong 46.7% cookie market share by:
+     - Understanding what makes our popular cookie varieties tick
+     - Adding new flavors and package sizes to meet different needs
+     - Looking at ways to use winning cookie recipes in other product types
+   * Fix our snacks' 7.5% underperformance through:
      - Reformulating and innovating products
      - Research on consumer preferences
      - Competitive analysis in the snacks category
